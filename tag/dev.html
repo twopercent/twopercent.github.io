@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>twopercent - dev</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">twopercent </a></h1>
+                <nav><ul>
+                    <li><a href="/category/python.html">Python</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="/metro-transit-cli.html">Metro Transit CLI</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2015-09-22T16:26:00-05:00">
+                Published: Tue 22 September 2015
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/chris-moser.html">Chris Moser</a>
+        </address>
+<p>In <a href="/category/python.html">Python</a>.</p>
+<p>tags: <a href="/tag/python.html">python</a> <a href="/tag/rest.html">REST</a> <a href="/tag/dev.html">dev</a> </p>
+</footer><!-- /.post-info -->
+        <a href="http://www.metrotransit.org">Metro Transit</a> is the main transit operator in the twin cities. 
+        They have a fine website but a little too much clicking is required to find out when the next bus is going to roll by. 
+        I found the <a href="http://svc.metrotransit.org" />Metro Transit web services</a> page to be just what I needed. 
+        <br><br>
+        I wrote three functions to request the applicable directions of a specific route, the time stops on a route, and the next arrivals at a time stop. 
+        There is also some logic to present the user with the results of each query and enter input to craft the next request. 
+        I used <code>urllib.request</code> and <code>xml.etree.ElementTree</code> from the python 3.4 standard library. 
+        <br><br>
+        First the user is prompted for a route number and a call is made to the API to return the directions, either North - South or East - West, of that route. 
+        The data is returned in XML format as an array of text value pairs, the direction and a direcion code.
+        ElementTree is used to parse them. 
+        I load the data into a list of lists so that I can display the options with a <code>0.</code> and <code>1.</code> identifier. 
+        The users input is used to select the index of the parent list, taking the first index of the child list, which is the direction code. 
+        <br><br>
+        The direction code is used alond with the bus number to craft the next API call.  
+        An array of pairs is again returned. 
+        Time stops and a four character stop code are returned in order of the direction that was specified. 
+        A list of lists is again created and the users is promtped for a seletion. 
+        <br><br>
+        The final call combines the route number, the direction of travel and the time stop location. 
+        A collection of "NexTripDeparture" are returned which contain information about the next vehicles scheduled to stop at the requested location. 
+        I print the arrival time, bus number, route description, and a "BlockNumber" designator for the vehicle. (maybe a bus number) 
+        <br><br>
+        The code is on <a href="https://github.com/twopercent/mtcli">GitHub</a>.  
+        <br><br>
+        Use git clone to clone is locally: 
+        <br>
+        <code>git clone https://github.com/twopercent/mtcli</code>
+        <br><br>
+        Some more work can be done to pull out the XML parsing from the API call functions as it is very simiar in all three. 
+                    </article>
+            </aside><!-- /#featured -->
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>blogroll</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>
