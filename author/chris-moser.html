@@ -14,13 +14,72 @@
         <header id="banner" class="body">
                 <h1><a href="/">twopercent </a></h1>
                 <nav><ul>
-                    <li><a href="/category/python.html">Python</a></li>
+                    <li><a href="/category/misc.html">misc</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="/metro-transit-cli.html">Metro Transit CLI</a></h1>
+                    <h1 class="entry-title"><a href="/pxe-server-part-1.html">PXE Server Part 1</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2015-10-09T13:00:00-05:00">
+                Published: Fri 09 October 2015
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/chris-moser.html">Chris Moser</a>
+        </address>
+<p>In <a href="/category/misc.html">misc</a>.</p>
+<p>tags: <a href="/tag/ops.html">ops</a> <a href="/tag/centos.html">centos</a> <a href="/tag/kickstart.html">kickstart</a> </p>
+</footer><!-- /.post-info --><p>Let's set up a test environment for development and operations related projects.
+I have a number of rack mounted machines at my disposal so I will set up a PXE boot enviroment to provision my physical hosts.
+I will start with a wiki article from <abbr title="https://wiki.centos.org/HowTos/PXE/PXE_Setup">CentOS HowTos</abbr>.
+You can tell if is from an older verision of CentOS because of CentOS 3, 4, and 5 images they use.</p>
+<p>I started with minimal install of CentOS 7. I installed and configured tftp-server and syslinux as described.
+/usr/lib/syslinux does not exist and must have been moved since this how-to was created.
+We can use rpm to find the syslinux files we are looking for</p>
+<div class="highlight"><pre>rpm -ql syslinux <span class="p">|</span>grep pxelinx.0
+</pre></div>
+<p>/tftpboot also does not exist.</p>
+<div class="highlight"><pre>rpm -ql tftp-server <span class="p">|</span>grep tftpboot
+</pre></div>
+<p>I copied the required files from /usr/share/syslinux to /var/lib/tftpboot.
+The kernel and initial ramdisk images needed can be found after the next step.
+The how-to gives different locations for the syslinux images in your tftpboot tree and PXE Menu file.
+Just make sure yours are the same.</p>
+<p>Instead of using vsftpd I went with httpd.
+I copied the CentOS 7 DVD to the /var/www/html/centos/7/os/x86_64 directory.</p>
+<p>The dhcpd.conf file seems to be dated as well.
+Take a look at the example file located at /usr/share/doc/dhcp*/dhcpd.conf.example.
+I added next-server and filename declarations from the how-to that aren't specified in the example file.
+Use sudo journalctl -xn 30 if the dhcp daemon fails to start.
+If you don't specity 30 lines, 10 will be given and the useful information will be missing.</p>
+<p>I estimate 50% of linux tutorials cop out with a statement like &quot;Disable the firewall and SELinux&quot; at the start.
+This is unfortunate, but understandable as iptables takes some getting used to.
+Things are a little easier in CentOS 7 with firewalld.</p>
+<div class="highlight"><pre>firewall-cmd --get-services
+sudo firewall-cmd --permanent --add-service<span class="o">=</span>dhcp --add-service<span class="o">=</span>ftp --add-service<span class="o">=</span>http
+sudo firewall-cmd --reload
+</pre></div>
+<p>Check your work with:</p>
+<div class="highlight"><pre>firewall-cmd --list-services
+</pre></div>
+<p>Now boot one of your client machines and select PXE boot. If all went well you should be greeted with the PXE menu you created.
+Depending on if you confiugred a kickstart file in your PXE menu or opted for a manual install, proceed with installation.</p>
+                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/metro-transit-cli.html" rel="bookmark"
+                           title="Permalink to Metro Transit CLI">Metro Transit CLI</a></h1>
+                </header>
+
+                <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2015-09-22T16:26:00-05:00">
                 Published: Tue 22 September 2015
@@ -29,41 +88,17 @@
         <address class="vcard author">
                 By                         <a class="url fn" href="/author/chris-moser.html">Chris Moser</a>
         </address>
-<p>In <a href="/category/python.html">Python</a>.</p>
+<p>In <a href="/category/misc.html">misc</a>.</p>
 <p>tags: <a href="/tag/python.html">python</a> <a href="/tag/rest.html">REST</a> <a href="/tag/dev.html">dev</a> </p>
-</footer><!-- /.post-info -->
+</footer><!-- /.post-info -->                
         <a href="http://www.metrotransit.org">Metro Transit</a> is the main transit operator in the twin cities. 
         They have a fine website but a little too much clicking is required to find out when the next bus is going to roll by. 
-        I found the <a href="http://svc.metrotransit.org" />Metro Transit web services</a> page to be just what I needed. 
-        <br><br>
-        I wrote three functions to request the applicable directions of a specific route, the time stops on a route, and the next arrivals at a time stop. 
-        There is also some logic to present the user with the results of each query and enter input to craft the next request. 
-        I used <code>urllib.request</code> and <code>xml.etree.ElementTree</code> from the python 3.4 standard library. 
-        <br><br>
-        First the user is prompted for a route number and a call is made to the API to return the directions, either North - South or East - West, of that route. 
-        The data is returned in XML format as an array of text value pairs, the direction and a direcion code.
-        ElementTree is used to parse them. 
-        I load the data into a list of lists so that I can display the options with a <code>0.</code> and <code>1.</code> identifier. 
-        The users input is used to select the index of the parent list, taking the first index of the child list, which is the direction code. 
-        <br><br>
-        The direction code is used alond with the bus number to craft the next API call.  
-        An array of pairs is again returned. 
-        Time stops and a four character stop code are returned in order of the direction that was specified. 
-        A list of lists is again created and the users is promtped for a seletion. 
-        <br><br>
-        The final call combines the route number, the direction of travel and the time stop location. 
-        A collection of "NexTripDeparture" are returned which contain information about the next vehicles scheduled to stop at the requested location. 
-        I print the arrival time, bus number, route description, and a "BlockNumber" designator for the vehicle. (maybe a bus number) 
-        <br><br>
-        The code is on <a href="https://github.com/twopercent/mtcli">GitHub</a>.  
-        <br><br>
-        Use git clone to clone is locally: 
-        <br>
-        <code>git clone https://github.com/twopercent/mtcli</code>
-        <br><br>
-        Some more work can be done to pull out the XML parsing from the API call functions as it is very simiar in all three. 
-                    </article>
-            </aside><!-- /#featured -->
+        I found the <a href="http://svc.metrotransit.org" />Metro Transit web services</a> page to be just what I needed ...
+                <a class="readmore" href="/metro-transit-cli.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
+                </section><!-- /#content -->
         <section id="extras" class="body">
                 <div class="blogroll">
                         <h2>blogroll</h2>

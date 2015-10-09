@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
         <meta charset="utf-8" />
-        <title>twopercent</title>
+        <title>PXE Server Part 1</title>
         <link rel="stylesheet" href="/theme/css/main.css" />
 
         <!--[if IE]>
@@ -14,13 +14,18 @@
         <header id="banner" class="body">
                 <h1><a href="/">twopercent </a></h1>
                 <nav><ul>
-                    <li><a href="/category/misc.html">misc</a></li>
+                    <li class="active"><a href="/category/misc.html">misc</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/pxe-server-part-1.html" rel="bookmark"
+           title="Permalink to PXE Server Part 1">PXE Server Part 1</a></h1>
+    </header>
 
-            <aside id="featured" class="body">
-                <article>
-                    <h1 class="entry-title"><a href="/pxe-server-part-1.html">PXE Server Part 1</a></h1>
+    <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2015-10-09T13:00:00-05:00">
                 Published: Fri 09 October 2015
@@ -31,7 +36,7 @@
         </address>
 <p>In <a href="/category/misc.html">misc</a>.</p>
 <p>tags: <a href="/tag/ops.html">ops</a> <a href="/tag/centos.html">centos</a> <a href="/tag/kickstart.html">kickstart</a> </p>
-</footer><!-- /.post-info --><p>Let's set up a test environment for development and operations related projects.
+</footer><!-- /.post-info -->      <p>Let's set up a test environment for development and operations related projects.
 I have a number of rack mounted machines at my disposal so I will set up a PXE boot enviroment to provision my physical hosts.
 I will start with a wiki article from <abbr title="https://wiki.centos.org/HowTos/PXE/PXE_Setup">CentOS HowTos</abbr>.
 You can tell if is from an older verision of CentOS because of CentOS 3, 4, and 5 images they use.</p>
@@ -66,39 +71,11 @@ sudo firewall-cmd --reload
 </pre></div>
 <p>Now boot one of your client machines and select PXE boot. If all went well you should be greeted with the PXE menu you created.
 Depending on if you confiugred a kickstart file in your PXE menu or opted for a manual install, proceed with installation.</p>
-                </article>
-            </aside><!-- /#featured -->
-                <section id="content" class="body">
-                    <h1>Other articles</h1>
-                    <hr />
-                    <ol id="posts-list" class="hfeed">
 
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/metro-transit-cli.html" rel="bookmark"
-                           title="Permalink to Metro Transit CLI">Metro Transit CLI</a></h1>
-                </header>
+    </div><!-- /.entry-content -->
 
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2015-09-22T16:26:00-05:00">
-                Published: Tue 22 September 2015
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/chris-moser.html">Chris Moser</a>
-        </address>
-<p>In <a href="/category/misc.html">misc</a>.</p>
-<p>tags: <a href="/tag/python.html">python</a> <a href="/tag/rest.html">REST</a> <a href="/tag/dev.html">dev</a> </p>
-</footer><!-- /.post-info -->                
-        <a href="http://www.metrotransit.org">Metro Transit</a> is the main transit operator in the twin cities. 
-        They have a fine website but a little too much clicking is required to find out when the next bus is going to roll by. 
-        I found the <a href="http://svc.metrotransit.org" />Metro Transit web services</a> page to be just what I needed ...
-                <a class="readmore" href="/metro-transit-cli.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-                </ol><!-- /#posts-list -->
-                </section><!-- /#content -->
+  </article>
+</section>
         <section id="extras" class="body">
                 <div class="blogroll">
                         <h2>blogroll</h2>
