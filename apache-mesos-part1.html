@@ -2,9 +2,12 @@
 <html lang="">	
 <head>
 	<meta charset="utf-8"/>
-	<title>twopercent</title>	
+	<title>Apache Mesos Part1 - twopercent</title>	
 	<meta name="author" content="Chris Moser">
 	
+
+	<meta name="description" content="Installing Apache Mesos on CentOS 7.2">
+
 
 	<link rel="top" href="#" /><link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,300italic,400italic,600italic|Source+Code+Pro' rel='stylesheet' type='text/css'></link>
 	<link rel="stylesheet" href="/theme/css/main.css" type="text/css" />
@@ -28,12 +31,18 @@
 	  <div class="wrapper">
 
 		  <div role="main" class="content">
-
-
-
-      <article>
-        <h1><a href="/apache-mesos-part1.html">Apache Mesos Part1</a></h1>
-        <div class="section" id="installation">
+	<article class="full">
+			
+		<h1>Apache Mesos Part1</h1>
+		
+<div class="metadata">
+  <time datetime="2016-02-23T15:12:00-06:00" pubdate>Tue 23 February 2016</time>
+    <address class="vcard author">
+      by <a class="url fn" href="/author/chris-moser.html">Chris Moser</a>
+    </address>
+  in <a href="/category/blog.html">blog</a>
+<p class="tags">tagged <a href="/tag/ops.html">ops</a>, <a href="/tag/centos.html">CentOS</a>, <a href="/tag/mesos.html">mesos</a></p></div>		
+		<div class="section" id="installation">
 <h2>Installation</h2>
 <p><a class="reference external" href="http://mesos.apache.org/">Apache Mesos</a> is an open-source cluster manager.
 It &quot;provides efficient resource isolation and sharing across distributed applications, or frameworks&quot;</p>
@@ -79,53 +88,15 @@ Perhaps that will be a later project.</p>
 <p>On the master we can open the web interface at <a class="reference external" href="http://192.168.10.1:5050">http://192.168.10.1:5050</a> and see that two slaves have connected.
 Plenty of output is provided on the terminal to troubleshoot any issues.</p>
 </div>
+	
 
-      </article>
+	</article>
 
-      <hr />
+    <p>
+	<a href="https://twitter.com/share" class="twitter-share-button" data-via="" data-lang="en" data-size="large" data-related="">Tweet</a>
+	<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+	</p>
 
-        <div>
-          <h3>Last posts</h3>
-          <ol class="archive">
-    
-
-
-      <li>
-<a href="/advent-of-code-2015.html" rel="bookmark" title="Permalink to Advent of Code 2015">Advent of Code 2015</a>
-  <time datetime="2015-12-10T16:10:00-06:00" pubdate>Thu 10 December 2015</time>
-<p class="tags">tags: <a href="/tag/dev.html">dev</a><a href="/tag/python.html">python</a></p></a>      </li>
-
-
-      <li>
-<a href="/salt-stack-and-boinc.html" rel="bookmark" title="Permalink to Salt Stack and BOINC">Salt Stack and BOINC</a>
-  <time datetime="2015-11-11T15:54:00-06:00" pubdate>Wed 11 November 2015</time>
-<p class="tags">tags: <a href="/tag/ops.html">ops</a><a href="/tag/saltstack.html">saltstack</a><a href="/tag/boinc.html">BOINC</a></p></a>      </li>
-
-
-      <li>
-<a href="/pxe-server-part-2-and-salt-stack.html" rel="bookmark" title="Permalink to PXE Server Part 2 and Salt Stack">PXE Server Part 2 and Salt Stack</a>
-  <time datetime="2015-11-05T12:18:00-06:00" pubdate>Thu 05 November 2015</time>
-<p class="tags">tags: <a href="/tag/ops.html">ops</a><a href="/tag/saltstack.html">saltstack</a><a href="/tag/firewalld.html">firewalld</a><a href="/tag/kickstart.html">kickstart</a></p></a>      </li>
-
-
-      <li>
-<a href="/metro-transit-cli-bus-locations.html" rel="bookmark" title="Permalink to Metro Transit CLI Bus Locations">Metro Transit CLI Bus Locations</a>
-  <time datetime="2015-10-20T16:37:00-05:00" pubdate>Tue 20 October 2015</time>
-<p class="tags">tags: <a href="/tag/python.html">python</a><a href="/tag/dev.html">dev</a><a href="/tag/maps.html">maps</a></p></a>      </li>
-
-
-      <li>
-<a href="/irq-70-nobody-cared.html" rel="bookmark" title="Permalink to IRQ 70: nobody cared">IRQ 70: nobody cared</a>
-  <time datetime="2015-10-15T15:15:00-05:00" pubdate>Thu 15 October 2015</time>
-<p class="tags">tags: <a href="/tag/ops.html">ops</a><a href="/tag/centos.html">centos</a><a href="/tag/rocks.html">ROCKS</a></p></a>      </li>
-
-
-
-
-
-
-          </ol>
-        </div>
 
 		  </div>	
 		  
@@ -134,7 +105,7 @@ Plenty of output is provided on the terminal to troubleshoot any issues.</p>
 	        <nav>
 	          <h2>Categories</h2>
 	          <ul>
-	              <li ><a href="/category/blog.html">blog</a></li>
+	              <li class="active"><a href="/category/blog.html">blog</a></li>
 	          </ul>
 	        </nav>
 

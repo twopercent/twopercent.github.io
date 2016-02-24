@@ -1,96 +1,97 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="">	
 <head>
-        <meta charset="utf-8" />
-        <title>twopercent - REST</title>
-        <link rel="stylesheet" href="/theme/css/main.css" />
+	<meta charset="utf-8"/>
+	<title>REST - twopercent</title>	
+	<meta name="author" content="Chris Moser">
+	
 
-        <!--[if IE]>
-            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
+	<link rel="top" href="#" /><link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,300italic,400italic,600italic|Source+Code+Pro' rel='stylesheet' type='text/css'></link>
+	<link rel="stylesheet" href="/theme/css/main.css" type="text/css" />
+		
+
 </head>
+	
+<body>
 
-<body id="index" class="home">
-        <header id="banner" class="body">
-                <h1><a href="/">twopercent </a></h1>
-                <nav><ul>
-                    <li><a href="/category/misc.html">misc</a></li>
-                </ul></nav>
-        </header><!-- /#banner -->
+    <div class="container">
+	  
+	  <header role="banner">
+	    <div class="feeds">
+	    </div>
+	      <nav class="pages">
+			  <a href="/pages/resume.html">Resume</a>
+	      </nav>
+		<a href="" class="title">twopercent</a>
+      </header>
+	
+	  <div class="wrapper">
 
-            <aside id="featured" class="body">
-                <article>
-                    <h1 class="entry-title"><a href="/metro-transit-cli.html">Metro Transit CLI</a></h1>
-<footer class="post-info">
-        <abbr class="published" title="2015-09-22T16:26:00-05:00">
-                Published: Tue 22 September 2015
-        </abbr>
+		  <div role="main" class="content">
 
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/chris-moser.html">Chris Moser</a>
-        </address>
-<p>In <a href="/category/misc.html">misc</a>.</p>
-<p>tags: <a href="/tag/python.html">python</a> <a href="/tag/rest.html">REST</a> <a href="/tag/dev.html">dev</a> </p>
-</footer><!-- /.post-info -->
-        <a href="http://www.metrotransit.org">Metro Transit</a> is the main transit operator in the twin cities. 
-        They have a fine website but a little too much clicking is required to find out when the next bus is going to roll by. 
-        I found the <a href="http://svc.metrotransit.org" />Metro Transit web services</a> page to be just what I needed. 
-        <br><br>
-        I wrote three functions to request the applicable directions of a specific route, the time stops on a route, and the next arrivals at a time stop. 
-        There is also some logic to present the user with the results of each query and enter input to craft the next request. 
-        I used <code>urllib.request</code> and <code>xml.etree.ElementTree</code> from the python 3.4 standard library. 
-        <br><br>
-        First the user is prompted for a route number and a call is made to the API to return the directions, either North - South or East - West, of that route. 
-        The data is returned in XML format as an array of text value pairs, the direction and a direcion code.
-        ElementTree is used to parse them. 
-        I load the data into a list of lists so that I can display the options with a <code>0.</code> and <code>1.</code> identifier. 
-        The users input is used to select the index of the parent list, taking the first index of the child list, which is the direction code. 
-        <br><br>
-        The direction code is used alond with the bus number to craft the next API call.  
-        An array of pairs is again returned. 
-        Time stops and a four character stop code are returned in order of the direction that was specified. 
-        A list of lists is again created and the users is promtped for a seletion. 
-        <br><br>
-        The final call combines the route number, the direction of travel and the time stop location. 
-        A collection of "NexTripDeparture" are returned which contain information about the next vehicles scheduled to stop at the requested location. 
-        I print the arrival time, bus number, route description, and a "BlockNumber" designator for the vehicle. (maybe a bus number) 
-        <br><br>
-        The code is on <a href="https://github.com/twopercent/mtcli">GitHub</a>.  
-        <br><br>
-        Use git clone to clone is locally: 
-        <br>
-        <code>git clone https://github.com/twopercent/mtcli</code>
-        <br><br>
-        Some more work can be done to pull out the XML parsing from the API call functions as it is very simiar in all three. 
-                    </article>
-            </aside><!-- /#featured -->
-        <section id="extras" class="body">
-                <div class="blogroll">
-                        <h2>blogroll</h2>
-                        <ul>
-                            <li><a href="http://getpelican.com/">Pelican</a></li>
-                            <li><a href="http://python.org/">Python.org</a></li>
-                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
-                            <li><a href="#">You can modify those links in your config file</a></li>
-                        </ul>
-                </div><!-- /.blogroll -->
-                <div class="social">
-                        <h2>social</h2>
-                        <ul>
+<h1>Post tagged: REST</h1>
 
-                            <li><a href="#">You can add links in your config file</a></li>
-                            <li><a href="#">Another social link</a></li>
-                        </ul>
-                </div><!-- /.social -->
-        </section><!-- /#extras -->
+<article class="summary">
+<div class="metadata">
+  <time datetime="2015-09-22T16:26:00-05:00" pubdate>Tue 22 September 2015</time>
+    <address class="vcard author">
+      by <a class="url fn" href="/author/chris-moser.html">Chris Moser</a>
+    </address>
+  in <a href="/category/blog.html">blog</a>
+<p class="tags">tagged <a href="/tag/python.html">python</a>, <a href="/tag/rest.html">REST</a>, <a href="/tag/dev.html">dev</a></p></div>  <div>
+    <h2>
+      <a href="/metro-transit-cli.html" rel="bookmark" title="Permalink to Metro Transit CLI">Metro Transit CLI</a>
+    </h2>
+    <p>Start of one of my early python projects to interact with the Metro Transit API</p>
+  </div>
+</article>
+<div class="pagination">
+    Page 1 / 1
+</div>
 
-        <footer id="contentinfo" class="body">
-                <address id="about" class="vcard body">
-                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
-                </address><!-- /#about -->
+		  </div>	
+		  
+		  <div class="sidebar">
 
-                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
-        </footer><!-- /#contentinfo -->
+	        <nav>
+	          <h2>Categories</h2>
+	          <ul>
+	              <li ><a href="/category/blog.html">blog</a></li>
+	          </ul>
+	        </nav>
+
+	          <aside>
+	          <h2>Social</h2>
+			    <ul class="social">
+				  <li><a href="http://github.com/twopercent">github</a><i></i></li>
+				  <li><a href="http://twitter.com/dancingwstar">twitter</a><i></i></li>
+				  <li><a href="https://www.linkedin.com/pub/chris-moser/43/738/932">linkedin</a><i></i></li>
+			    </ul>
+			  </aside>
+
+	          <aside>
+	            <h2>Blogroll</h2>
+	            <ul>
+	                <li><a href="http://getpelican.com/">Pelian</a></li>
+	                <li><a href="http://python.org/">Python.org</a></li>
+	                <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+	                <li><a href="http://neic.coop">NEIC</a></li>
+	            </ul>
+	          </aside>
+
+		  </div>
+
+	  </div>
+
+      <footer>
+		<p role="contentinfo">
+		  © 2013 Chris Moser - Proudly powered by <a href="http://alexis.notmyidea.org/pelican/">pelican</a>. Theme <a href="https://github.com/fle/pelican-simplegrey">pelican-simplegrey</a>.
+    	</p>
+
+	  </footer>	
+
+	</div>
+	
 
 </body>
 </html>

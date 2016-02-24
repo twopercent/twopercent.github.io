@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="">	
+<head>
+	<meta charset="utf-8"/>
+	<title>Salt Stack and BOINC - twopercent</title>	
+	<meta name="author" content="Chris Moser">
+	
+
+	<meta name="description" content="Running BOINC with Salt Stack.">
+
+
+	<link rel="top" href="#" /><link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,300italic,400italic,600italic|Source+Code+Pro' rel='stylesheet' type='text/css'></link>
+	<link rel="stylesheet" href="/theme/css/main.css" type="text/css" />
+		
+
+</head>
+	
+<body>
+
+    <div class="container">
+	  
+	  <header role="banner">
+	    <div class="feeds">
+	    </div>
+	      <nav class="pages">
+			  <a href="/pages/resume.html">Resume</a>
+	      </nav>
+		<a href="" class="title">twopercent</a>
+      </header>
+	
+	  <div class="wrapper">
+
+		  <div role="main" class="content">
+	<article class="full">
+			
+		<h1>Salt Stack and BOINC</h1>
+		
+<div class="metadata">
+  <time datetime="2015-11-11T15:54:00-06:00" pubdate>Wed 11 November 2015</time>
+    <address class="vcard author">
+      by <a class="url fn" href="/author/chris-moser.html">Chris Moser</a>
+    </address>
+  in <a href="/category/blog.html">blog</a>
+<p class="tags">tagged <a href="/tag/ops.html">ops</a>, <a href="/tag/saltstack.html">saltstack</a>, <a href="/tag/boinc.html">BOINC</a></p></div>		
+		<div class="section" id="initial-setup">
+<h2>Initial Setup</h2>
+<p>Now that we have some hardware and Salt Stack running, lets create a state file and put the minions to work.
+I am going to use <a class="reference external" href="http://boinc.berkeley.edu/">BOINC</a> to stress the CPU's.</p>
+<p>The only boinc packages for CentOS 7 listed on <a class="reference external" href="http://pkgs.org/">pkgs.org</a> just moved out of epel-testing into epel after I completed my build.
+They would be a good resource for a future configuration.</p>
+<p>I downloaded the source and compiled boinc with the default options on my head node.
+I attached to <a class="reference external" href="http://www.worldcommunitygrid.org/">World Community Grid</a> with the boinccmd tool supplying the project URL and my account key.</p>
+<div class="highlight"><pre>boinccmd --project_attach www.worldcommunitygrid.org 122244_6d39631909f6dbc9491c34478ff24806
+</pre></div>
+<p>I don't intend to continue running BOINC on the salt master but wanted to make sure installaition worked and create an account file to supply to the minions.</p>
+</div>
+<div class="section" id="salt-state">
+<h2>Salt State</h2>
+<p>Now we should be able to create a salt state file, serve the boinc binaries and configuration files to the minions, and apply the state.
+The salt master puts files in /srv/salt by default.
+I created /src/salt/boinc to make things a little cleaner.
+It includes:</p>
+<div class="highlight"><pre>account_www.worldcommunitygrid.org.xml
+boinc
+boinc-client_init.d
+boinc-client_sysconfig
+</pre></div>
+<p>The xml file was created when I attached to a project on the salt master and when copied to anohter host will instruct BOINC to request work from the same project.
+The boinc directory includes the compiled boinc application.
+The boinc-client files are a startup script to be placed in /etc/init.d and a configuration file to be placed in /etc/sysconfig</p>
+<p>In /srv/salt I also keep the boinc.sls state file:</p>
+<div class="highlight"><pre>boinc:
+  user.present:
+    - home: /home/boinc
+
+/home/boinc/boinc/:
+  file.recurse:
+    - <span class="nb">source</span>: salt://boinc/boinc
+    - user: boinc
+    - group: boinc
+    - clean: True
+
+/home/boinc/boinc/client/boinc_client:
+    file.managed:
+      - <span class="nb">source</span>: salt://boinc/boinc/client/boinc_client
+      - user: boinc
+      - group: boinc
+      - mode: 775
+
+/home/boinc/boinc/client/boinc:
+  file.managed:
+    - <span class="nb">source</span>: salt://boinc/boinc/client/boinc
+    - user: boinc
+    - group: boinc
+    - mode: 775
+
+/home/boinc/boinc/client/boinccmd:
+  file.managed:
+    - <span class="nb">source</span>: salt://boinc/boinc/client/boinccmd
+    - user: boinc
+    - group: boinc
+    - mode: 775
+
+/home/boinc/boinc/client/switcher:
+  file.managed:
+    - <span class="nb">source</span>: salt://boinc/boinc/client/switcher
+    - user: boinc
+    - group: boinc
+    - mode: 775
+
+/home/boinc/boinc/client/build_po:
+  file.managed:
+    - <span class="nb">source</span>: salt://boinc/boinc/client/build_po
+    - user: boinc
+    - group: boinc
+    - mode: 775
+
+/home/boinc/account_www.worldcommunitygrid.org.xml:
+  file.managed:
+    - <span class="nb">source</span>: salt://boinc/account_www.worldcommunitygrid.org.xml
+    - user: boinc
+    - group: boinc
+    - mode: 664
+
+/etc/init.d/boinc-client:
+  file.managed:
+    - <span class="nb">source</span>: salt://boinc/boinc-client_init.d
+    - user: root
+    - group: root
+    - mode: 755
+
+/etc/sysconfig/boinc-client:
+  file.managed:
+    - <span class="nb">source</span>: salt://boinc/boinc-client_sysconfig
+    - user: root
+    - group: root
+    - mode: 755
+
+start boinc:
+  service.running:
+    - name: boinc-client
+</pre></div>
+<p>The first statement tells salt to create a boinc user with the default home directory location.
+Next we copy the boinc folder with the compiled boinc application to the boinc users newly created home directory.
+Salt does not maintain the owner and permissions of files when copying with the &quot;file.recurse&quot; function so the next 5 statements verify these key binaries are executable.
+We copy the account information file to the root of the boinc user home directory, the init script to /etc/init.d and the config file to /etc/sysconfig
+Finally, the &quot;start boinc&quot; state verifes that the boinc service is running.</p>
+<p>I want boinc to run on all my minions currently so we apply the state file with:</p>
+<div class="highlight"><pre>salt <span class="s1">&#39;*&#39;</span> state.apply boinc
+</pre></div>
+</div>
+<div class="section" id="next-steps">
+<h2>Next Steps</h2>
+<p>Now that a boinc-client package is available in EPEL, it would probably be cleaner to use that.
+Another option would be to use the <a class="reference external" href="https://github.com/BOINC/boinc">BOINC github repository</a>.
+We could configure salt to pull, complile, and install the latest verion on each minion every time there is an update.</p>
+<img alt="" src="http://www.worldcommunitygrid.org/getDynamicImage.do?memberName=c_moser&amp;mnOn=false&amp;stat=1&amp;imageNum=1&amp;rankOn=true&amp;projectsOn=true&amp;special=true" />
+<img alt="" src="wcg_stats.png" />
+</div>
+	
+
+	</article>
+
+    <p>
+	<a href="https://twitter.com/share" class="twitter-share-button" data-via="" data-lang="en" data-size="large" data-related="">Tweet</a>
+	<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+	</p>
+
+
+		  </div>	
+		  
+		  <div class="sidebar">
+
+	        <nav>
+	          <h2>Categories</h2>
+	          <ul>
+	              <li class="active"><a href="/category/blog.html">blog</a></li>
+	          </ul>
+	        </nav>
+
+	          <aside>
+	          <h2>Social</h2>
+			    <ul class="social">
+				  <li><a href="http://github.com/twopercent">github</a><i></i></li>
+				  <li><a href="http://twitter.com/dancingwstar">twitter</a><i></i></li>
+				  <li><a href="https://www.linkedin.com/pub/chris-moser/43/738/932">linkedin</a><i></i></li>
+			    </ul>
+			  </aside>
+
+	          <aside>
+	            <h2>Blogroll</h2>
+	            <ul>
+	                <li><a href="http://getpelican.com/">Pelian</a></li>
+	                <li><a href="http://python.org/">Python.org</a></li>
+	                <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+	                <li><a href="http://neic.coop">NEIC</a></li>
+	            </ul>
+	          </aside>
+
+		  </div>
+
+	  </div>
+
+      <footer>
+		<p role="contentinfo">
+		  © 2013 Chris Moser - Proudly powered by <a href="http://alexis.notmyidea.org/pelican/">pelican</a>. Theme <a href="https://github.com/fle/pelican-simplegrey">pelican-simplegrey</a>.
+    	</p>
+
+	  </footer>	
+
+	</div>
+	
+
+</body>
+</html>
