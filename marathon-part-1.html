@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="">	
+<head>
+	<meta charset="utf-8"/>
+	<title>Marathon Part 1 - twopercent</title>	
+	<meta name="author" content="Chris Moser">
+	
+
+	<meta name="description" content="Installaing Marathon with a single zookeeper master">
+
+
+	<link rel="top" href="#" /><link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,300italic,400italic,600italic|Source+Code+Pro' rel='stylesheet' type='text/css'></link>
+	<link rel="stylesheet" href="/theme/css/main.css" type="text/css" />
+		
+
+</head>
+	
+<body>
+
+    <div class="container">
+	  
+	  <header role="banner">
+	    <div class="feeds">
+	    </div>
+	      <nav class="pages">
+			  <a href="/pages/resume.html">Resume</a>
+	      </nav>
+		<a href="" class="title">twopercent</a>
+      </header>
+	
+	  <div class="wrapper">
+
+		  <div role="main" class="content">
+	<article class="full">
+			
+		<h1>Marathon Part 1</h1>
+		
+<div class="metadata">
+  <time datetime="2016-03-08T11:58:00-06:00" pubdate>Tue 08 March 2016</time>
+    <address class="vcard author">
+      by <a class="url fn" href="/author/chris-moser.html">Chris Moser</a>
+    </address>
+  in <a href="/category/blog.html">blog</a>
+<p class="tags">tagged <a href="/tag/ops.html">ops</a>, <a href="/tag/mesos.html">mesos</a>, <a href="/tag/marathon.html">marathon</a>, <a href="/tag/zookeeper.html">zookeeper</a></p></div>		
+		<div class="section" id="introduction">
+<h2>Introduction</h2>
+<p><a class="reference external" href="https://mesosphere.github.io/marathon/">Marathon</a> is &quot;A cluster-wide init and control system for services in cgroups or Docker containers.&quot;
+It is provided by <a class="reference external" href="https://mesosphere.com/">Mesosphere</a> and is a core component of their Data Center Operating System (DCOS).</p>
+<p>We will need a running installation of mesos which we have <a class="reference external" href="http://twopercent.github.io/apache-mesos-part-1.html">already installed</a>.</p>
+</div>
+<div class="section" id="zookeeper">
+<h2>Zookeeper</h2>
+<p>Zookeeper is a distributed coordination service from Apache.
+A cluster or 'ensemble' of zookeeper nodes coordinate with each other through a shared hierarchical name space of data registers.
+EPEL has no zookeeper package so download the tar file from <a class="reference external" href="http://zookeeper.apache.org/">Apache Zookeeper</a> site.
+Alternatively, the mesosphere CentOS marathon package includes zookeeper.</p>
+<p>We will confiure zookeeper in standalone mode in order to run Marathon.</p>
+<p>Create a config file 'zoo.cfg' and place it in the conf directory.</p>
+<div class="highlight"><pre><span class="nv">tickTime</span><span class="o">=</span>2000
+<span class="nv">dataDir</span><span class="o">=</span>/var/zookeeper
+<span class="nv">clientPort</span><span class="o">=</span>2181
+</pre></div>
+<p>Allow access through the CentOS7 firewalld by creating zookeeper.xml and placing it in /etc/firewalld/services</p>
+<div class="highlight"><pre><span class="o">[</span>cmoser@newton ~<span class="o">]</span><span class="nv">$ </span>ssh root@scfs <span class="s2">&quot;cat /etc/firewalld/services/zookeeper.xml&quot;</span>
+&lt;?xml <span class="nv">version</span><span class="o">=</span><span class="s2">&quot;1.0&quot;</span> <span class="nv">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span>?&gt;
+&lt;service&gt;
+  &lt;short&gt;zookeeper&lt;/short&gt;
+  &lt;description&gt;TCP port <span class="m">2181</span> <span class="k">for</span> zookeeper&lt;/description&gt;
+  &lt;port <span class="nv">protocol</span><span class="o">=</span><span class="s2">&quot;tcp&quot;</span> <span class="nv">port</span><span class="o">=</span><span class="s2">&quot;2181&quot;</span>/&gt;
+&lt;/service&gt;
+</pre></div>
+<p>Add the service with firewall-cmd and reload the configuration.</p>
+<p>In production we would configure 3 or 5 zookeeper nodes.
+zoo.cfg would additionally list each node anlong with an ID number.
+We would also need to specify two additional ports in zookeeper.xml.
+2888 for peers to communicate with each other and 3888 for followers to connect to the leader.</p>
+<p>Start zookeeper and check its status with:</p>
+<div class="highlight"><pre>/bin/zkServer.sh start
+/bin/zkServer.sh status
+</pre></div>
+</div>
+<div class="section" id="id1">
+<h2>Marathon</h2>
+<p>Download and unwind the <a class="reference external" href="https://mesosphere.github.io/marathon/">Marathon package</a></p>
+<p>Start marathing referencing your localhost as the zookeeper node</p>
+<div class="highlight"><pre>sudo ./bin/start --master zk://192.168.10.1:2181/mesos --zk zk://192.168.10.1:2181/marathon
+</pre></div>
+<p>You should be able to access the marathon UI at <a class="reference external" href="http://192.168.10.1:8080">http://192.168.10.1:8080</a></p>
+</div>
+	
+
+	</article>
+
+    <p>
+	<a href="https://twitter.com/share" class="twitter-share-button" data-via="" data-lang="en" data-size="large" data-related="">Tweet</a>
+	<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+	</p>
+
+
+		  </div>	
+		  
+		  <div class="sidebar">
+
+	        <nav>
+	          <h2>Categories</h2>
+	          <ul>
+	              <li class="active"><a href="/category/blog.html">blog</a></li>
+	          </ul>
+	        </nav>
+
+	          <aside>
+	          <h2>Social</h2>
+			    <ul class="social">
+				  <li><a href="http://github.com/twopercent">github</a><i></i></li>
+				  <li><a href="http://twitter.com/dancingwstar">twitter</a><i></i></li>
+				  <li><a href="https://www.linkedin.com/pub/chris-moser/43/738/932">linkedin</a><i></i></li>
+			    </ul>
+			  </aside>
+
+	          <aside>
+	            <h2>Blogroll</h2>
+	            <ul>
+	                <li><a href="http://getpelican.com/">Pelian</a></li>
+	                <li><a href="http://python.org/">Python.org</a></li>
+	                <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+	                <li><a href="http://neic.coop">NEIC</a></li>
+	            </ul>
+	          </aside>
+
+		  </div>
+
+	  </div>
+
+      <footer>
+		<p role="contentinfo">
+		  © 2013 Chris Moser - Proudly powered by <a href="http://alexis.notmyidea.org/pelican/">pelican</a>. Theme <a href="https://github.com/fle/pelican-simplegrey">pelican-simplegrey</a>.
+    	</p>
+
+	  </footer>	
+
+	</div>
+	
+
+</body>
+</html>

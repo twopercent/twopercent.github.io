@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="">	
+<head>
+	<meta charset="utf-8"/>
+	<title>Apache Aurora Tutorial - twopercent</title>	
+	<meta name="author" content="Chris Moser">
+	
+
+	<meta name="description" content="The Aurora 0.11.0 tutorial">
+
+
+	<link rel="top" href="#" /><link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,300italic,400italic,600italic|Source+Code+Pro' rel='stylesheet' type='text/css'></link>
+	<link rel="stylesheet" href="/theme/css/main.css" type="text/css" />
+		
+
+</head>
+	
+<body>
+
+    <div class="container">
+	  
+	  <header role="banner">
+	    <div class="feeds">
+	    </div>
+	      <nav class="pages">
+			  <a href="/pages/resume.html">Resume</a>
+	      </nav>
+		<a href="" class="title">twopercent</a>
+      </header>
+	
+	  <div class="wrapper">
+
+		  <div role="main" class="content">
+	<article class="full">
+			
+		<h1>Apache Aurora Tutorial</h1>
+		
+<div class="metadata">
+  <time datetime="2016-03-03T15:28:00-06:00" pubdate>Thu 03 March 2016</time>
+    <address class="vcard author">
+      by <a class="url fn" href="/author/chris-moser.html">Chris Moser</a>
+    </address>
+  in <a href="/category/blog.html">blog</a>
+<p class="tags">tagged <a href="/tag/ops.html">ops</a>, <a href="/tag/debian.html">debian</a>, <a href="/tag/mesos.html">mesos</a>, <a href="/tag/aurora.html">aurora</a>, <a href="/tag/vagrant.html">vagrant</a>, <a href="/tag/virtualbox.html">virtualbox</a></p></div>		
+		<div class="section" id="introduction">
+<h2>Introduction</h2>
+<p><a class="reference external" href="http://aurora.apache.org/">Apache Aurora</a> is a Mesos framework for long-running services and cron jobs.
+<a class="reference external" href="https://mesosphere.github.io/marathon/">Marathon</a> from <a class="reference external" href="https://mesosphere.com/">Mesosphere</a> provides similar functionality.</p>
+<p>While Aurora is a framework for mesos, which we have <a class="reference external" href="http://twopercent.github.io/apache-mesos-part-1.html">already installed</a>, this tutorial uses vagrant to build a single VM running mesos master, zookeeper, aurora, and mesos slave.</p>
+</div>
+<div class="section" id="vagrant">
+<h2>Vagrant</h2>
+<p>Grab a package from your repository or <a class="reference external" href="https://www.vagrantup.com/">Vagrant</a>'s <a class="reference external" href="https://www.vagrantup.com/downloads.html/">downloads page</a>.</p>
+<p>I prefer KVM over virtual box so I intalled the <a class="reference external" href="https://github.com/pradels/vagrant-libvirt">vagrant-libvirt</a> plugin.
+There turned out to be some features no yet implemented in the libvirt plugin that the aurora vagrant file uses.
+So I retreated to virtual box.</p>
+</div>
+<div class="section" id="virtual-box">
+<h2>Virtual Box</h2>
+<p>Since VirtualBox contains a non-free compiler, debian has moved its packages to contrib.
+Add &quot;contrib&quot; to your /etc/apt/sources.list file, update, and install.</p>
+<p>You can also get a debian package from <a class="reference external" href="http://www.virtualbox.org">Virtual Box</a>'s <a class="reference external" href="https://www.virtualbox.org/wiki/Linux_Downloads/">downloads page.</a></p>
+</div>
+<div class="section" id="aurora">
+<h2>Aurora</h2>
+<p>Clone the aurora git repository with:</p>
+<div class="highlight"><pre>git clone git://git.apacke.org/aurora.git
+</pre></div>
+<p>Enter the aurora directory and run vagrant up.
+Vagrant will read the 'Vagrantfile' which describes what type of VM to provision, set some network and memory variables and execute the examples/vagrant/provision-dev-cluster.sh script.
+The script will install all the necessary prerequisites and then mesos and aurora.</p>
+<p>I ran into an issue with the provision-dev-cluster.sh script.
+A recent change in <a class="reference external" href="http://people.apache.org/">http://people.apache.org/</a> caused a broken link to the thrift compiler binary.</p>
+<div class="highlight"><pre><span class="o">==</span>&gt; devcluster: + <span class="nv">thrift_deb</span><span class="o">=</span>thrift-compiler_0.9.1_amd64.deb
+<span class="o">==</span>&gt; devcluster: + wget -c http://people.apache.org/~jfarrell/thrift/0.9.1/contrib/deb/ubuntu/12.04/thrift-compiler_0.9.1_amd64.deb
+<span class="o">==</span>&gt; devcluster: --2016-03-04 21:57:10--  http://people.apache.org/~jfarrell/thrift/0.9.1/contrib/deb/ubuntu/12.04/thrift-compiler_0.9.1_amd64.deb
+<span class="o">==</span>&gt; devcluster: Resolving people.apache.org <span class="o">(</span>people.apache.org<span class="o">)</span>...
+<span class="o">==</span>&gt; devcluster: 163.172.16.173
+<span class="o">==</span>&gt; devcluster: ,
+<span class="o">==</span>&gt; devcluster: 163.172.16.173
+<span class="o">==</span>&gt; devcluster: Connecting to people.apache.org <span class="o">(</span>people.apache.org<span class="o">)</span><span class="p">|</span>163.172.16.173<span class="p">|</span>:80...
+<span class="o">==</span>&gt; devcluster: connected.
+<span class="o">==</span>&gt; devcluster: HTTP request sent, awaiting response...
+<span class="o">==</span>&gt; devcluster: <span class="m">404</span> Not <span class="nv">Found</span>
+<span class="o">==</span>&gt; devcluster: 2016-03-04 21:57:10 ERROR 404: Not Found.
+The SSH <span class="nb">command </span>responded with a non-zero <span class="nb">exit </span>status. Vagrant
+</pre></div>
+<p>I checked the <a class="reference external" href="http://issues.apache.org/jira/browse/AURORA/">JIRA aurora</a> page and didn't see anyting related.
+I hopped into #aurora on irc.freenode.net and asked if this was a known issue.</p>
+<p>I prepared a patch for aurora's github respository but it is a mirror of the apache repo.
+You are asked to submit updates via their review board tool.
+Since I didn't have a ReviewBoard account <a class="reference external" href="https://reviews.apache.org/users/zmanji/">zmanji</a> created a <a class="reference external" href="https://reviews.apache.org/r/44347/diff/1#index_header/">review</a> for me.</p>
+<p>After this change in the provision-dev-cluster.sh script, vagrant up finished successfully.</p>
+</div>
+<div class="section" id="run-a-job">
+<h2>Run a Job</h2>
+<p>Copy the provided python program and aurora configuration file.
+Verify the /etc/aurora/cluster.json file is accurate.
+Run the job with:</p>
+<div class="highlight"><pre>aurora job create devcluster/www-data/devel/hello_world /vagrant/hello_world.aurora
+</pre></div>
+<p>If all goes well, you should see the job being scheduled and run on the mesos and aurora status web pages.</p>
+<p>Kill your job and destroy your cluster when finished.</p>
+</div>
+	
+
+	</article>
+
+    <p>
+	<a href="https://twitter.com/share" class="twitter-share-button" data-via="" data-lang="en" data-size="large" data-related="">Tweet</a>
+	<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+	</p>
+
+
+		  </div>	
+		  
+		  <div class="sidebar">
+
+	        <nav>
+	          <h2>Categories</h2>
+	          <ul>
+	              <li class="active"><a href="/category/blog.html">blog</a></li>
+	          </ul>
+	        </nav>
+
+	          <aside>
+	          <h2>Social</h2>
+			    <ul class="social">
+				  <li><a href="http://github.com/twopercent">github</a><i></i></li>
+				  <li><a href="http://twitter.com/dancingwstar">twitter</a><i></i></li>
+				  <li><a href="https://www.linkedin.com/pub/chris-moser/43/738/932">linkedin</a><i></i></li>
+			    </ul>
+			  </aside>
+
+	          <aside>
+	            <h2>Blogroll</h2>
+	            <ul>
+	                <li><a href="http://getpelican.com/">Pelian</a></li>
+	                <li><a href="http://python.org/">Python.org</a></li>
+	                <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+	                <li><a href="http://neic.coop">NEIC</a></li>
+	            </ul>
+	          </aside>
+
+		  </div>
+
+	  </div>
+
+      <footer>
+		<p role="contentinfo">
+		  © 2013 Chris Moser - Proudly powered by <a href="http://alexis.notmyidea.org/pelican/">pelican</a>. Theme <a href="https://github.com/fle/pelican-simplegrey">pelican-simplegrey</a>.
+    	</p>
+
+	  </footer>	
+
+	</div>
+	
+
+</body>
+</html>
