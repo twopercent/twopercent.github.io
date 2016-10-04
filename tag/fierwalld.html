@@ -1,98 +1,121 @@
-<!doctype html>
-<html lang="">	
+<!DOCTYPE html>
+<html lang="en">
 <head>
-	<meta charset="utf-8"/>
-	<title>fierwalld - twopercent</title>	
-	<meta name="author" content="Chris Moser">
-	
+        <meta charset="utf-8" />
+        <title>twopercent - fierwalld</title>
+        <link rel="stylesheet" href="https://twopercent.github.io/theme/css/main.css" />
+        <link href="https://twopercent.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="twopercent Atom Feed" />
 
-	<link rel="top" href="#" /><link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,300italic,400italic,600italic|Source+Code+Pro' rel='stylesheet' type='text/css'></link>
-	<link rel="stylesheet" href="/theme/css/main.css" type="text/css" />
-		
-
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
 </head>
-	
-<body>
 
-    <div class="container">
-	  
-	  <header role="banner">
-	    <div class="feeds">
-	    </div>
-	      <nav class="pages">
-			  <a href="/pages/resume.html">Resume</a>
-	      </nav>
-		<a href="" class="title">twopercent</a>
-      </header>
-	
-	  <div class="wrapper">
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://twopercent.github.io/">twopercent </a></h1>
+                <nav><ul>
+                    <li><a href="https://twopercent.github.io/pages/resume.html">Resume</a></li>
+                    <li><a href="https://twopercent.github.io/category/blog.html">blog</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
 
-		  <div role="main" class="content">
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="https://twopercent.github.io/pxe-server-part-1.html">PXE Server Part 1</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2015-10-09T13:00:00-05:00">
+                Published: Fri 09 October 2015
+        </abbr>
 
-<h1>Post tagged: fierwalld</h1>
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://twopercent.github.io/author/chris-moser.html">Chris Moser</a>
+        </address>
+<p>In <a href="https://twopercent.github.io/category/blog.html">blog</a>.</p>
+<p>tags: <a href="https://twopercent.github.io/tag/ops.html">ops</a> <a href="https://twopercent.github.io/tag/centos.html">centos</a> <a href="https://twopercent.github.io/tag/fierwalld.html">fierwalld</a> <a href="https://twopercent.github.io/tag/kickstart.html">kickstart</a> </p>
+</footer><!-- /.post-info --><p>Let's set up a test environment for development and operations related projects.
+I have a number of rack mounted machines at my disposal so I will set up a PXE boot enviroment to provision my physical hosts.
+I will start with a wiki article from <a class="reference external" href="https://wiki.centos.org/HowTos/PXE/PXE_Setup/">CentOS HowTos</a>.
+You can tell if is from an older verision of CentOS because of CentOS 3, 4, and 5 images they use.</p>
+<p>I started with minimal install of CentOS 7. I installed and configured tftp-server and syslinux as described.
+/usr/lib/syslinux does not exist and must have been moved since this how-to was created.
+We can use rpm to find the syslinux files we are looking for:</p>
+<div class="highlight"><pre><span></span>rpm -ql syslinux <span class="p">|</span>grep pxelinx.0
+</pre></div>
+<p>/tftpboot also does not exist.</p>
+<div class="highlight"><pre><span></span>rpm -ql tftp-server <span class="p">|</span>grep tftpboot
+</pre></div>
+<p>I copied the required files from /usr/share/syslinux to /var/lib/tftpboot.
+The kernel and initial ramdisk images needed can be found after the next step.
+The how-to gives different locations for the syslinux images in your tftpboot tree and PXE Menu file, make sure yours are the same.
+My pxelinux.cfg/default file looks like this:</p>
+<div class="highlight"><pre><span></span>default menu.c32
+prompt 0
+timeout 300
+ONTIMEOUT <span class="nb">local</span>
 
-<article class="summary">
-<div class="metadata">
-  <time datetime="2015-10-09T13:00:00-05:00" pubdate>Fri 09 October 2015</time>
-    <address class="vcard author">
-      by <a class="url fn" href="/author/chris-moser.html">Chris Moser</a>
-    </address>
-  in <a href="/category/blog.html">blog</a>
-<p class="tags">tagged <a href="/tag/ops.html">ops</a>, <a href="/tag/centos.html">centos</a>, <a href="/tag/fierwalld.html">fierwalld</a>, <a href="/tag/kickstart.html">kickstart</a></p></div>  <div>
-    <h2>
-      <a href="/pxe-server-part-1.html" rel="bookmark" title="Permalink to PXE Server Part 1">PXE Server Part 1</a>
-    </h2>
-    <p><p class="first last">Initial setup of PXE server, dhcp, tftp, http to provision hardware</p>
-</p>
-  </div>
-</article>
-<div class="pagination">
-    Page 1 / 1
-</div>
+MENU TITLE Cluster Lab PXE Menu
 
-		  </div>	
-		  
-		  <div class="sidebar">
+LABEL CentOS <span class="m">7</span> Interactive
+    MENU LABEL CentOS <span class="m">7</span> Interactive
+    KERNEL images/centos/7/x86_64/pxeboot/vmlinuz
+    APPEND <span class="nv">initrd</span><span class="o">=</span>images/centos/7/x86_64/pxeboot/initrd.img inst.repo<span class="o">=</span>http://192.168.10.1/centos/7/os/x86_64
 
-	        <nav>
-	          <h2>Categories</h2>
-	          <ul>
-	              <li ><a href="/category/blog.html">blog</a></li>
-	          </ul>
-	        </nav>
+LABEL CentOS <span class="m">7</span> KS Minimal
+    MENU LABEL CentOS <span class="m">7</span> KS Minimal
+    KERNEL images/centos/7/x86_64/pxeboot/vmlinuz
+    APPEND <span class="nv">initrd</span><span class="o">=</span>images/centos/7/x86_64/pxeboot/initrd.img inst.repo<span class="o">=</span>http://192.168.10.1/centos/7/os/x86_64 <span class="nv">ks</span><span class="o">=</span>http://192.168.10.1/kickstart/centos7_minimal.ks
+</pre></div>
+<p>Instead of using vsftpd I went with httpd.
+I copied the CentOS 7 DVD to the /var/www/html/centos/7/os/x86_64 directory.</p>
+<p>The dhcpd.conf file seems to be dated as well.
+Take a look at the example file located at /usr/share/doc/dhcp*/dhcpd.conf.example.
+I added next-server and filename declarations from the how-to that aren't specified in the example file.
+Use sudo journalctl -xn 30 if the dhcp daemon fails to start.
+If you don't specity 30 lines, 10 will be given and the useful information will be missing.</p>
+<p>I estimate 50% of linux tutorials cop out with a statement like &quot;Disable the firewall and SELinux&quot; at the start.
+This is unfortunate, but understandable as iptables takes some getting used to.
+Things are a little easier in CentOS 7 with firewalld.</p>
+<div class="highlight"><pre><span></span>firewall-cmd --get-services
+sudo firewall-cmd --permanent --add-service<span class="o">=</span>dhcp --add-service<span class="o">=</span>ftp --add-service<span class="o">=</span>http
+sudo firewall-cmd --reload
+</pre></div>
+<p>Check your work with:</p>
+<div class="highlight"><pre><span></span>firewall-cmd --list-services
+</pre></div>
+<p>Now boot one of your client machines and select PXE boot. If all went well you should be greeted with the PXE menu you created.
+Depending on if you confiugred a kickstart file in your PXE menu or opted for a manual install, proceed with installation.</p>
+                </article>
+            </aside><!-- /#featured -->
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>blogroll</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="http://neic.coop">NEIC</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://twopercent.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
 
-	          <aside>
-	          <h2>Social</h2>
-			    <ul class="social">
-				  <li><a href="http://github.com/twopercent">github</a><i></i></li>
-				  <li><a href="http://twitter.com/dancingwstar">twitter</a><i></i></li>
-				  <li><a href="https://www.linkedin.com/pub/chris-moser/43/738/932">linkedin</a><i></i></li>
-			    </ul>
-			  </aside>
+                            <li><a href="http://github.com/twopercent">github</a></li>
+                            <li><a href="http://twitter.com/dancingwstar">twitter</a></li>
+                            <li><a href="https://www.linkedin.com/pub/chris-moser/43/738/932">linkedin</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
 
-	          <aside>
-	            <h2>Blogroll</h2>
-	            <ul>
-	                <li><a href="http://getpelican.com/">Pelian</a></li>
-	                <li><a href="http://python.org/">Python.org</a></li>
-	                <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
-	                <li><a href="http://neic.coop">NEIC</a></li>
-	            </ul>
-	          </aside>
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
 
-		  </div>
-
-	  </div>
-
-      <footer>
-		<p role="contentinfo">
-		  © 2013 Chris Moser - Proudly powered by <a href="http://alexis.notmyidea.org/pelican/">pelican</a>. Theme <a href="https://github.com/fle/pelican-simplegrey">pelican-simplegrey</a>.
-    	</p>
-
-	  </footer>	
-
-	</div>
-	
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
 
 </body>
 </html>

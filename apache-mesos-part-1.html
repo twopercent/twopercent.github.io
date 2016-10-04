@@ -1,54 +1,50 @@
-<!doctype html>
-<html lang="">	
+<!DOCTYPE html>
+<html lang="en">
 <head>
-	<meta charset="utf-8"/>
-	<title>Apache Mesos Part 1 - twopercent</title>	
-	<meta name="author" content="Chris Moser">
-	
+        <meta charset="utf-8" />
+        <title>Apache Mesos Part 1</title>
+        <link rel="stylesheet" href="https://twopercent.github.io/theme/css/main.css" />
+        <link href="https://twopercent.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="twopercent Atom Feed" />
 
-	<meta name="description" content="Installing Apache Mesos on CentOS 7.2">
-
-
-	<link rel="top" href="#" /><link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,300italic,400italic,600italic|Source+Code+Pro' rel='stylesheet' type='text/css'></link>
-	<link rel="stylesheet" href="/theme/css/main.css" type="text/css" />
-		
-
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
 </head>
-	
-<body>
 
-    <div class="container">
-	  
-	  <header role="banner">
-	    <div class="feeds">
-	    </div>
-	      <nav class="pages">
-			  <a href="/pages/resume.html">Resume</a>
-	      </nav>
-		<a href="" class="title">twopercent</a>
-      </header>
-	
-	  <div class="wrapper">
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://twopercent.github.io/">twopercent </a></h1>
+                <nav><ul>
+                    <li><a href="https://twopercent.github.io/pages/resume.html">Resume</a></li>
+                    <li class="active"><a href="https://twopercent.github.io/category/blog.html">blog</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://twopercent.github.io/apache-mesos-part-1.html" rel="bookmark"
+           title="Permalink to Apache Mesos Part 1">Apache Mesos Part 1</a></h1>
+    </header>
 
-		  <div role="main" class="content">
-	<article class="full">
-			
-		<h1>Apache Mesos Part 1</h1>
-		
-<div class="metadata">
-  <time datetime="2016-02-23T15:12:00-06:00" pubdate>Tue 23 February 2016</time>
-    <address class="vcard author">
-      by <a class="url fn" href="/author/chris-moser.html">Chris Moser</a>
-    </address>
-  in <a href="/category/blog.html">blog</a>
-<p class="tags">tagged <a href="/tag/ops.html">ops</a>, <a href="/tag/centos.html">CentOS</a>, <a href="/tag/mesos.html">mesos</a></p></div>		
-		<div class="section" id="installation">
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2016-02-23T15:12:00-06:00">
+                Published: Tue 23 February 2016
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://twopercent.github.io/author/chris-moser.html">Chris Moser</a>
+        </address>
+<p>In <a href="https://twopercent.github.io/category/blog.html">blog</a>.</p>
+<p>tags: <a href="https://twopercent.github.io/tag/ops.html">ops</a> <a href="https://twopercent.github.io/tag/centos.html">CentOS</a> <a href="https://twopercent.github.io/tag/mesos.html">mesos</a> </p>
+</footer><!-- /.post-info -->      <div class="section" id="installation">
 <h2>Installation</h2>
 <p><a class="reference external" href="http://mesos.apache.org/">Apache Mesos</a> is an open-source cluster manager.
 It &quot;provides efficient resource isolation and sharing across distributed applications, or frameworks&quot;</p>
 <p>I have a fairly vanilla CentOS 7.2 host to use for this installation as well as some CentOS 7.2 slave hosts.
 First make sure it is up to date.</p>
-<div class="highlight"><pre>sudo yum -y update
+<div class="highlight"><pre><span></span>sudo yum -y update
 </pre></div>
 <p>The installation is straight forward following the <a class="reference external" href="http://mesos.apache.org/gettingstarted/">Getting Started</a> guide.</p>
 <p>Pull down the latest mesos.*.tar.gz, verify all the dependencies are installed, and start the compilation.
@@ -60,7 +56,7 @@ After performing all the prerequisites, I was able to 'sudo make install' withou
 <h2>Firewall</h2>
 <p>Configure firewalld with firewall-cmd on the master and slave nodes to allow access to port 5050.
 Create a 'mesos.xml' file in /etc/firewalld/services</p>
-<div class="highlight"><pre>&lt;?xml <span class="nv">version</span><span class="o">=</span><span class="s2">&quot;1.0&quot;</span> <span class="nv">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span>?&gt;
+<div class="highlight"><pre><span></span>&lt;?xml <span class="nv">version</span><span class="o">=</span><span class="s2">&quot;1.0&quot;</span> <span class="nv">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span>?&gt;
 &lt;service&gt;
   &lt;short&gt;mesos&lt;/short&gt;
   &lt;description&gt;TCP port <span class="m">5050</span> <span class="k">for</span> mesos&lt;/description&gt;
@@ -68,11 +64,11 @@ Create a 'mesos.xml' file in /etc/firewalld/services</p>
 &lt;/service&gt;
 </pre></div>
 <p>Add the service and reload the settings</p>
-<div class="highlight"><pre>sudo firewall-cmd --permanent --add-service<span class="o">=</span>mesos
+<div class="highlight"><pre><span></span>sudo firewall-cmd --permanent --add-service<span class="o">=</span>mesos
 sudo firewall-cmd --reload
 </pre></div>
 <p>Check your work with:</p>
-<div class="highlight"><pre>sudo iptables -nL
+<div class="highlight"><pre><span></span>sudo iptables -nL
 </pre></div>
 <p>Firewall settings should be handled by your configuration management solution of choice or via your bare-metal provisioning system.
 Perhaps that will be a later project.</p>
@@ -80,10 +76,10 @@ Perhaps that will be a later project.</p>
 <div class="section" id="startup">
 <h2>Startup</h2>
 <p>From the build directory start the master with:</p>
-<div class="highlight"><pre>sudo ./bin/mesos-master.sh --ip<span class="o">=</span>192.168.10.1 --work_dir<span class="o">=</span>/var/lib/mesos --cluster<span class="o">=</span>MotionLogic
+<div class="highlight"><pre><span></span>sudo ./bin/mesos-master.sh --ip<span class="o">=</span>192.168.10.1 --work_dir<span class="o">=</span>/var/lib/mesos --cluster<span class="o">=</span>MotionLogic
 </pre></div>
 <p>On each slave, run:</p>
-<div class="highlight"><pre>sudo ./bin/mesos-slave.sh --master<span class="o">=</span>192.168.10.1
+<div class="highlight"><pre><span></span>sudo ./bin/mesos-slave.sh --master<span class="o">=</span>192.168.10.1
 </pre></div>
 <p>On the master we can open the web interface at <a class="reference external" href="http://192.168.10.1:5050">http://192.168.10.1:5050</a> and see that two slaves have connected.
 Plenty of output is provided on the terminal to troubleshoot any issues.</p>
@@ -92,63 +88,44 @@ Plenty of output is provided on the terminal to troubleshoot any issues.</p>
 <h2>Update</h2>
 <p>In researching <a class="reference external" href="https://aurora.apache.org/">Apache Aurora</a> I came across CentOS 7 rpms for current Mesos versions provided by <a class="reference external" href="https://mesosphere.com/">Mesosphere</a>.</p>
 <p><a class="reference external" href="http://aurora.apache.org/documentation/latest/installing/#mesos-on-centos-7">http://aurora.apache.org/documentation/latest/installing/#mesos-on-centos-7</a></p>
-<div class="highlight"><pre>sudo rpm -Uvh http://repos.mesosphere.io/el/7/noarch/RPMS/mesosphere-el-repo-7-1.noarch.rpm
+<div class="highlight"><pre><span></span>sudo rpm -Uvh http://repos.mesosphere.io/el/7/noarch/RPMS/mesosphere-el-repo-7-1.noarch.rpm
 sudo yum repository-packages mesosphere list
 </pre></div>
 </div>
-	
 
-	</article>
+    </div><!-- /.entry-content -->
 
-    <p>
-	<a href="https://twitter.com/share" class="twitter-share-button" data-via="" data-lang="en" data-size="large" data-related="">Tweet</a>
-	<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-	</p>
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>blogroll</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="http://neic.coop">NEIC</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://twopercent.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
 
+                            <li><a href="http://github.com/twopercent">github</a></li>
+                            <li><a href="http://twitter.com/dancingwstar">twitter</a></li>
+                            <li><a href="https://www.linkedin.com/pub/chris-moser/43/738/932">linkedin</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
 
-		  </div>	
-		  
-		  <div class="sidebar">
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
 
-	        <nav>
-	          <h2>Categories</h2>
-	          <ul>
-	              <li class="active"><a href="/category/blog.html">blog</a></li>
-	          </ul>
-	        </nav>
-
-	          <aside>
-	          <h2>Social</h2>
-			    <ul class="social">
-				  <li><a href="http://github.com/twopercent">github</a><i></i></li>
-				  <li><a href="http://twitter.com/dancingwstar">twitter</a><i></i></li>
-				  <li><a href="https://www.linkedin.com/pub/chris-moser/43/738/932">linkedin</a><i></i></li>
-			    </ul>
-			  </aside>
-
-	          <aside>
-	            <h2>Blogroll</h2>
-	            <ul>
-	                <li><a href="http://getpelican.com/">Pelian</a></li>
-	                <li><a href="http://python.org/">Python.org</a></li>
-	                <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
-	                <li><a href="http://neic.coop">NEIC</a></li>
-	            </ul>
-	          </aside>
-
-		  </div>
-
-	  </div>
-
-      <footer>
-		<p role="contentinfo">
-		  © 2013 Chris Moser - Proudly powered by <a href="http://alexis.notmyidea.org/pelican/">pelican</a>. Theme <a href="https://github.com/fle/pelican-simplegrey">pelican-simplegrey</a>.
-    	</p>
-
-	  </footer>	
-
-	</div>
-	
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
 
 </body>
 </html>

@@ -1,48 +1,44 @@
-<!doctype html>
-<html lang="">	
+<!DOCTYPE html>
+<html lang="en">
 <head>
-	<meta charset="utf-8"/>
-	<title>PXE Server Part 2 and Salt Stack - twopercent</title>	
-	<meta name="author" content="Chris Moser">
-	
+        <meta charset="utf-8" />
+        <title>PXE Server Part 2 and Salt Stack</title>
+        <link rel="stylesheet" href="https://twopercent.github.io/theme/css/main.css" />
+        <link href="https://twopercent.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="twopercent Atom Feed" />
 
-	<meta name="description" content="Initial setup of salt stack.">
-
-
-	<link rel="top" href="#" /><link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,300italic,400italic,600italic|Source+Code+Pro' rel='stylesheet' type='text/css'></link>
-	<link rel="stylesheet" href="/theme/css/main.css" type="text/css" />
-		
-
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
 </head>
-	
-<body>
 
-    <div class="container">
-	  
-	  <header role="banner">
-	    <div class="feeds">
-	    </div>
-	      <nav class="pages">
-			  <a href="/pages/resume.html">Resume</a>
-	      </nav>
-		<a href="" class="title">twopercent</a>
-      </header>
-	
-	  <div class="wrapper">
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://twopercent.github.io/">twopercent </a></h1>
+                <nav><ul>
+                    <li><a href="https://twopercent.github.io/pages/resume.html">Resume</a></li>
+                    <li class="active"><a href="https://twopercent.github.io/category/blog.html">blog</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://twopercent.github.io/pxe-server-part-2-and-salt-stack.html" rel="bookmark"
+           title="Permalink to PXE Server Part 2 and Salt Stack">PXE Server Part 2 and Salt Stack</a></h1>
+    </header>
 
-		  <div role="main" class="content">
-	<article class="full">
-			
-		<h1>PXE Server Part 2 and Salt Stack</h1>
-		
-<div class="metadata">
-  <time datetime="2015-11-05T12:18:00-06:00" pubdate>Thu 05 November 2015</time>
-    <address class="vcard author">
-      by <a class="url fn" href="/author/chris-moser.html">Chris Moser</a>
-    </address>
-  in <a href="/category/blog.html">blog</a>
-<p class="tags">tagged <a href="/tag/ops.html">ops</a>, <a href="/tag/saltstack.html">saltstack</a>, <a href="/tag/firewalld.html">firewalld</a>, <a href="/tag/kickstart.html">kickstart</a></p></div>		
-		<div class="section" id="minions-assemble">
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2015-11-05T12:18:00-06:00">
+                Published: Thu 05 November 2015
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://twopercent.github.io/author/chris-moser.html">Chris Moser</a>
+        </address>
+<p>In <a href="https://twopercent.github.io/category/blog.html">blog</a>.</p>
+<p>tags: <a href="https://twopercent.github.io/tag/ops.html">ops</a> <a href="https://twopercent.github.io/tag/saltstack.html">saltstack</a> <a href="https://twopercent.github.io/tag/firewalld.html">firewalld</a> <a href="https://twopercent.github.io/tag/kickstart.html">kickstart</a> </p>
+</footer><!-- /.post-info -->      <div class="section" id="minions-assemble">
 <h2>Minions, Assemble!</h2>
 <p>I built a few CentOS hosts with the PXE server I created in a <a class="reference external" href="http://twopercent.github.io/pxe-server-part-1.html">previous post</a>.
 I used a kickstart file to install 'minimal server' so the installations could be unattended.
@@ -56,7 +52,7 @@ This would not be feasible for a large deployment and there are a number of opti
 </ol>
 <p>As our end goal is wrangle these machines with <a class="reference external" href="http://saltstack.com/">salt stack</a> it is a good idea to have kickstart install the salt-minion client as well.
 I used the bootstrap installer script by adding the following lines to the %post section of my kickstart file:</p>
-<div class="highlight"><pre>curl -L https://bootstrap.saltstack.com -o install_salt.sh
+<div class="highlight"><pre><span></span>curl -L https://bootstrap.saltstack.com -o install_salt.sh
 sudo sh install_salt.sh
 </pre></div>
 <p>You could also install the salt-minion package from EPEL.
@@ -64,7 +60,7 @@ Download the package to your PXE server, use createrepo to update your repositor
 Alternatively you could add the EPEL repository and install the salt-minion package in the %post section of your kickstart file.</p>
 <p>I don't have any DNS set up in my test environment so I added a line to the host file so the salt-minion client would find the master with the name &quot;salt&quot;.
 This is also in %post.</p>
-<div class="highlight"><pre><span class="nb">echo</span> <span class="s2">&quot;&lt;IP_of_SaltMaster&gt; salt&quot;</span> &gt;&gt; /etc/hosts
+<div class="highlight"><pre><span></span><span class="nb">echo</span> <span class="s2">&quot;&lt;IP_of_SaltMaster&gt; salt&quot;</span> &gt;&gt; /etc/hosts
 </pre></div>
 </div>
 <div class="section" id="the-salt-master">
@@ -73,11 +69,11 @@ This is also in %post.</p>
 <a class="reference external" href="https://docs.saltstack.com/en/getstarted/fundamentals/install.html#">docs.saltstack.com</a> details the installtion.</p>
 <p>The salt minions will continuously try to reach the salt master so the order of events shouldn't matter here.
 Check for incomming connections on the master with:</p>
-<div class="highlight"><pre>salt-key --list-all
+<div class="highlight"><pre><span></span>salt-key --list-all
 </pre></div>
 <p>I found nothing and remembered the firewall was probably blocking the connections.
 Add the file &quot;salt-master.xml&quot; to /etc/firewalld/services with the following content.</p>
-<div class="highlight"><pre>&lt;?xml <span class="nv">version</span><span class="o">=</span><span class="s2">&quot;1.0&quot;</span> <span class="nv">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span>?&gt;
+<div class="highlight"><pre><span></span>&lt;?xml <span class="nv">version</span><span class="o">=</span><span class="s2">&quot;1.0&quot;</span> <span class="nv">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span>?&gt;
 &lt;service&gt;
   &lt;short&gt;salt-master&lt;/short&gt;
   &lt;description&gt;TCP port <span class="m">4505</span> and <span class="m">4506</span> <span class="k">for</span> salt stack&lt;/description&gt;
@@ -86,69 +82,50 @@ Add the file &quot;salt-master.xml&quot; to /etc/firewalld/services with the fol
 &lt;/service&gt;
 </pre></div>
 <p>Reload the firewall to find the new rule, add it, and reload again to activate it.</p>
-<div class="highlight"><pre>sudo firewall-cmd --reload
+<div class="highlight"><pre><span></span>sudo firewall-cmd --reload
 sudo firewall-cmd --permanent --add-service<span class="o">=</span>salt-master
 sudo firewall-cmd --reload
 </pre></div>
 <p>If you still don't see minions with &quot;salt-key --list-all&quot; you can check the /var/log/salt/minion file on the minions for possible issues.
 Finally, add the minions on the master and run a test command.</p>
-<div class="highlight"><pre>salt-key --accept-all
+<div class="highlight"><pre><span></span>salt-key --accept-all
 salt <span class="s1">&#39;*&#39;</span> test.ping
 </pre></div>
 </div>
-	
 
-	</article>
+    </div><!-- /.entry-content -->
 
-    <p>
-	<a href="https://twitter.com/share" class="twitter-share-button" data-via="" data-lang="en" data-size="large" data-related="">Tweet</a>
-	<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-	</p>
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>blogroll</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="http://neic.coop">NEIC</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://twopercent.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
 
+                            <li><a href="http://github.com/twopercent">github</a></li>
+                            <li><a href="http://twitter.com/dancingwstar">twitter</a></li>
+                            <li><a href="https://www.linkedin.com/pub/chris-moser/43/738/932">linkedin</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
 
-		  </div>	
-		  
-		  <div class="sidebar">
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
 
-	        <nav>
-	          <h2>Categories</h2>
-	          <ul>
-	              <li class="active"><a href="/category/blog.html">blog</a></li>
-	          </ul>
-	        </nav>
-
-	          <aside>
-	          <h2>Social</h2>
-			    <ul class="social">
-				  <li><a href="http://github.com/twopercent">github</a><i></i></li>
-				  <li><a href="http://twitter.com/dancingwstar">twitter</a><i></i></li>
-				  <li><a href="https://www.linkedin.com/pub/chris-moser/43/738/932">linkedin</a><i></i></li>
-			    </ul>
-			  </aside>
-
-	          <aside>
-	            <h2>Blogroll</h2>
-	            <ul>
-	                <li><a href="http://getpelican.com/">Pelian</a></li>
-	                <li><a href="http://python.org/">Python.org</a></li>
-	                <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
-	                <li><a href="http://neic.coop">NEIC</a></li>
-	            </ul>
-	          </aside>
-
-		  </div>
-
-	  </div>
-
-      <footer>
-		<p role="contentinfo">
-		  © 2013 Chris Moser - Proudly powered by <a href="http://alexis.notmyidea.org/pelican/">pelican</a>. Theme <a href="https://github.com/fle/pelican-simplegrey">pelican-simplegrey</a>.
-    	</p>
-
-	  </footer>	
-
-	</div>
-	
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
 
 </body>
 </html>

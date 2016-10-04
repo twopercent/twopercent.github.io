@@ -1,55 +1,51 @@
-<!doctype html>
-<html lang="">	
+<!DOCTYPE html>
+<html lang="en">
 <head>
-	<meta charset="utf-8"/>
-	<title>IRQ 70: nobody cared - twopercent</title>	
-	<meta name="author" content="Chris Moser">
-	
+        <meta charset="utf-8" />
+        <title>IRQ 70: nobody cared</title>
+        <link rel="stylesheet" href="https://twopercent.github.io/theme/css/main.css" />
+        <link href="https://twopercent.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="twopercent Atom Feed" />
 
-	<meta name="description" content="Intel 82574L adapter sending IRQ's not handled by e1000e module">
-
-
-	<link rel="top" href="#" /><link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,300italic,400italic,600italic|Source+Code+Pro' rel='stylesheet' type='text/css'></link>
-	<link rel="stylesheet" href="/theme/css/main.css" type="text/css" />
-		
-
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
 </head>
-	
-<body>
 
-    <div class="container">
-	  
-	  <header role="banner">
-	    <div class="feeds">
-	    </div>
-	      <nav class="pages">
-			  <a href="/pages/resume.html">Resume</a>
-	      </nav>
-		<a href="" class="title">twopercent</a>
-      </header>
-	
-	  <div class="wrapper">
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://twopercent.github.io/">twopercent </a></h1>
+                <nav><ul>
+                    <li><a href="https://twopercent.github.io/pages/resume.html">Resume</a></li>
+                    <li class="active"><a href="https://twopercent.github.io/category/blog.html">blog</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://twopercent.github.io/irq-70-nobody-cared.html" rel="bookmark"
+           title="Permalink to IRQ 70: nobody cared">IRQ 70: nobody cared</a></h1>
+    </header>
 
-		  <div role="main" class="content">
-	<article class="full">
-			
-		<h1>IRQ 70: nobody cared</h1>
-		
-<div class="metadata">
-  <time datetime="2015-10-15T15:15:00-05:00" pubdate>Thu 15 October 2015</time>
-    <address class="vcard author">
-      by <a class="url fn" href="/author/chris-moser.html">Chris Moser</a>
-    </address>
-  in <a href="/category/blog.html">blog</a>
-<p class="tags">tagged <a href="/tag/ops.html">ops</a>, <a href="/tag/centos.html">centos</a>, <a href="/tag/rocks.html">ROCKS</a></p></div>		
-		<p>Nagios reported one of our <a class="reference external" href="http://www.rocksclusters.org/">Rocks</a> clusters lost all of its compute nodes.
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2015-10-15T15:15:00-05:00">
+                Published: Thu 15 October 2015
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://twopercent.github.io/author/chris-moser.html">Chris Moser</a>
+        </address>
+<p>In <a href="https://twopercent.github.io/category/blog.html">blog</a>.</p>
+<p>tags: <a href="https://twopercent.github.io/tag/ops.html">ops</a> <a href="https://twopercent.github.io/tag/centos.html">centos</a> <a href="https://twopercent.github.io/tag/rocks.html">ROCKS</a> </p>
+</footer><!-- /.post-info -->      <p>Nagios reported one of our <a class="reference external" href="http://www.rocksclusters.org/">Rocks</a> clusters lost all of its compute nodes.
 A Rocks head node typically has two or more network interfaces.
 One for public access to the cluster and another for a private network of compute nodes.
 Since I had a local technician on chat, I asked him to check the switch of the cluster network.
 It is a un-managed switch and a failure would cause this sympton.
 He reported it looked operational so I checked the logs and found this:</p>
-<div class="highlight"><pre>tesla kernel: irq 70: nobody cared <span class="o">(</span>try booting with the <span class="s2">&quot;irqpoll&quot;</span> option<span class="o">)</span>
-tesla kernel: Pid: 0, comm: swapper Tainted: G        W  ---------------    2.6.32-504.16.2.el6.x86_64 <span class="c">#1</span>
+<div class="highlight"><pre><span></span>tesla kernel: irq 70: nobody cared <span class="o">(</span>try booting with the <span class="s2">&quot;irqpoll&quot;</span> option<span class="o">)</span>
+tesla kernel: Pid: 0, comm: swapper Tainted: G        W  ---------------    2.6.32-504.16.2.el6.x86_64 <span class="c1">#1</span>
 tesla kernel: Call Trace:
 tesla kernel: &lt;IRQ&gt;  <span class="o">[</span>&lt;ffffffff810eccab&gt;<span class="o">]</span> ? __report_bad_irq+0x2b/0xa0
 tesla kernel: <span class="o">[</span>&lt;ffffffff810eceac&gt;<span class="o">]</span> ? note_interrupt+0x18c/0x1d0
@@ -64,87 +60,68 @@ tesla kernel: <span class="o">[</span>&lt;ffffffff81009fc6&gt;<span class="o">]<
 tesla kernel: <span class="o">[</span>&lt;ffffffff8152328d&gt;<span class="o">]</span> ? start_secondary+0x2be/0x301
 tesla kernel: handlers:
 tesla kernel: <span class="o">[</span>&lt;ffffffffa0164fe0&gt;<span class="o">]</span> <span class="o">(</span>e1000_msix_other+0x0/0x130 <span class="o">[</span>e1000e<span class="o">])</span>
-tesla kernel: Disabling IRQ <span class="c">#70</span>
+tesla kernel: Disabling IRQ <span class="c1">#70</span>
 </pre></div>
 <p>/proc/interrupts and lspci confirmed irq 70 was addigned to one of the Intel 82574L Gigabit Ethernet adapters and the e1000e kernel module was in place to control this hardware.
 The log messages seem to indicate the the network adapter was sending an interrupt request that the e1000e module was not handling.
 The kernel decided this is not good and disabled the irq channel and none of properly formed requests are handled.
 Restarting the network service resolved the symptom.</p>
-<div class="highlight"><pre>sudo service network restart
+<div class="highlight"><pre><span></span>sudo service network restart
 </pre></div>
 <p>After the issue arose again, I determined we needed to look for the cause.
 This <a class="reference external" href="http://ehc.ac/p/e1000/bugs/360/">bug report</a> seemed relevant.
 It appears there may be a hardware issue with this particular adapter.
 I decided to attempt the module option declaration suggested.</p>
 <p>I created the /etc/modprobe.d/e1000e.conf file witht the following line:</p>
-<div class="highlight"><pre>options e1000e <span class="nv">IntMode</span><span class="o">=</span>1,1,1
+<div class="highlight"><pre><span></span>options e1000e <span class="nv">IntMode</span><span class="o">=</span>1,1,1
 </pre></div>
 <p>Three 1's because I have three adapters.
 The module options are only read when the module is loaded and I have to bring down the network to reload the module.
 I have IPMI baseboard management access to do this.
 Stopping the network service while using secure shell, remote shell, telnet, or and other remote tool will terminate your connection and you will need console access to continue.</p>
-<div class="highlight"><pre>sudo service network stop
+<div class="highlight"><pre><span></span>sudo service network stop
 sudo rmmod e1000e
 sudo modprobe e1000e
 sudo service network start
 </pre></div>
 <p>A note in /var/log/messages tells me the option was parsed:</p>
-<div class="highlight"><pre>tesla kernel: e1000e 0000:04:00.0: Interrupt Mode <span class="nb">set </span>to 1
+<div class="highlight"><pre><span></span>tesla kernel: e1000e 0000:04:00.0: Interrupt Mode <span class="nb">set</span> to 1
 </pre></div>
 <p>It has been a week and there have been no more errors.</p>
-	
 
-	</article>
+    </div><!-- /.entry-content -->
 
-    <p>
-	<a href="https://twitter.com/share" class="twitter-share-button" data-via="" data-lang="en" data-size="large" data-related="">Tweet</a>
-	<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-	</p>
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>blogroll</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="http://neic.coop">NEIC</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://twopercent.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
 
+                            <li><a href="http://github.com/twopercent">github</a></li>
+                            <li><a href="http://twitter.com/dancingwstar">twitter</a></li>
+                            <li><a href="https://www.linkedin.com/pub/chris-moser/43/738/932">linkedin</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
 
-		  </div>	
-		  
-		  <div class="sidebar">
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
 
-	        <nav>
-	          <h2>Categories</h2>
-	          <ul>
-	              <li class="active"><a href="/category/blog.html">blog</a></li>
-	          </ul>
-	        </nav>
-
-	          <aside>
-	          <h2>Social</h2>
-			    <ul class="social">
-				  <li><a href="http://github.com/twopercent">github</a><i></i></li>
-				  <li><a href="http://twitter.com/dancingwstar">twitter</a><i></i></li>
-				  <li><a href="https://www.linkedin.com/pub/chris-moser/43/738/932">linkedin</a><i></i></li>
-			    </ul>
-			  </aside>
-
-	          <aside>
-	            <h2>Blogroll</h2>
-	            <ul>
-	                <li><a href="http://getpelican.com/">Pelian</a></li>
-	                <li><a href="http://python.org/">Python.org</a></li>
-	                <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
-	                <li><a href="http://neic.coop">NEIC</a></li>
-	            </ul>
-	          </aside>
-
-		  </div>
-
-	  </div>
-
-      <footer>
-		<p role="contentinfo">
-		  © 2013 Chris Moser - Proudly powered by <a href="http://alexis.notmyidea.org/pelican/">pelican</a>. Theme <a href="https://github.com/fle/pelican-simplegrey">pelican-simplegrey</a>.
-    	</p>
-
-	  </footer>	
-
-	</div>
-	
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
 
 </body>
 </html>

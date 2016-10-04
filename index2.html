@@ -1,197 +1,106 @@
-<!doctype html>
-<html lang="">	
+<!DOCTYPE html>
+<html lang="en">
 <head>
-	<meta charset="utf-8"/>
-	<title>twopercent</title>	
-	<meta name="author" content="Chris Moser">
-	
+        <meta charset="utf-8" />
+        <title>twopercent</title>
+        <link rel="stylesheet" href="https://twopercent.github.io/theme/css/main.css" />
+        <link href="https://twopercent.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="twopercent Atom Feed" />
 
-	<link rel="top" href="#" /><link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,300italic,400italic,600italic|Source+Code+Pro' rel='stylesheet' type='text/css'></link>
-	<link rel="stylesheet" href="/theme/css/main.css" type="text/css" />
-		
-
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
 </head>
-	
-<body>
 
-    <div class="container">
-	  
-	  <header role="banner">
-	    <div class="feeds">
-	    </div>
-	      <nav class="pages">
-			  <a href="/pages/resume.html">Resume</a>
-	      </nav>
-		<a href="" class="title">twopercent</a>
-      </header>
-	
-	  <div class="wrapper">
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://twopercent.github.io/">twopercent </a></h1>
+                <nav><ul>
+                    <li><a href="https://twopercent.github.io/pages/resume.html">Resume</a></li>
+                    <li><a href="https://twopercent.github.io/category/blog.html">blog</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
 
-		  <div role="main" class="content">
+                <section id="content" class="body">
+                    <ol id="posts-list" class="hfeed" start="9">
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://twopercent.github.io/pxe-server-part-1.html" rel="bookmark"
+                           title="Permalink to PXE Server Part 1">PXE Server Part 1</a></h1>
+                </header>
 
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2015-10-09T13:00:00-05:00">
+                Published: Fri 09 October 2015
+        </abbr>
 
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://twopercent.github.io/author/chris-moser.html">Chris Moser</a>
+        </address>
+<p>In <a href="https://twopercent.github.io/category/blog.html">blog</a>.</p>
+<p>tags: <a href="https://twopercent.github.io/tag/ops.html">ops</a> <a href="https://twopercent.github.io/tag/centos.html">centos</a> <a href="https://twopercent.github.io/tag/fierwalld.html">fierwalld</a> <a href="https://twopercent.github.io/tag/kickstart.html">kickstart</a> </p>
+</footer><!-- /.post-info -->                <p class="first last">Initial setup of PXE server, dhcp, tftp, http to provision hardware</p>
 
-      <article>
-        <h1><a href="/ansible-for-windows.html">Ansible for Windows</a></h1>
-        <p>A co-worker of mine is using <a class="reference external" href="https://www.ansible.com/">Ansible</a> to manage some windows hosts.
-I set up my own environment to do some testing for him.
-Recently released Ansible 2.1 has some new features for Windows management so I installed this from epel-testing.
-sshpass is also required.</p>
-<div class="section" id="installation">
-<h2>Installation</h2>
-<p>On CentOS 7:</p>
-<div class="highlight"><pre>sudo yum -y --enablerepo epel --enablerepo epel-testing install ansible sshpass
-</pre></div>
-<p>You will also need pywinrm as well:</p>
-<div class="highlight"><pre>sudo pip install pywinrm
-</pre></div>
-</div>
-<div class="section" id="configure-windows-clients">
-<h2>Configure Windows Clients</h2>
-<p>I followed the <a class="reference external" href="http://docs.ansible.com/ansible/intro_windows.html#windows-system-prep/">Windows System Prep</a> guide on <a class="reference external" href="http://docs.ansible.com/">docs.ansible.com</a>.
-The first suggestion is to run a powershell script on each Windows host.
-I have no reason to believe Ansible would be mailicious but I don't like the idea of running this script without needing to.
-Getting started, we only need to verify that powershell 3.0.0 or later is installed and that the WinRM service is installed and running.
-Open powershell and run the following commands:</p>
-<div class="highlight"><pre><span class="nv">$PSVersionTable</span><span class="p">.</span><span class="n">PSVersion</span>
-<span class="nb">Get-Service</span> <span class="s2">&quot;WinRM&quot;</span>
-</pre></div>
-<p>If powershell is too old or the WinRM service is not installed or not running, remedy these before moving on.</p>
-<p>Create a local administrator account for Ansible to use.</p>
-</div>
-<div class="section" id="configure-ansible">
-<h2>Configure Ansible</h2>
-<p>Change to /etc/ansible and modify the &quot;hosts&quot; file.
-Declare a [windows] group and list one or more Windows hosts.</p>
-<div class="highlight"><pre><span class="o">[</span>windows<span class="o">]</span>
-workPC.mydomain.com
-homePC.mydonain.com
-</pre></div>
-<p>Create the /etc/ansible/group_vars directory and create a &quot;windows.yml&quot; file in it.
-This will describe the local account to use, password, and connection settings.</p>
-<div class="highlight"><pre><span class="l-Scalar-Plain">ansible_user</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">ansible</span>
-<span class="l-Scalar-Plain">ansible_password</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">secret_password</span>
-<span class="l-Scalar-Plain">ansible_port</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">5985</span>
-<span class="l-Scalar-Plain">ansible_connection</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">winrm</span>
-</pre></div>
-<p>Port 5985 is the default http port for WS-Management.
-We can switch to 5986 after an SSL certificate is arranged and installed.</p>
-</div>
-<div class="section" id="the-results">
-<h2>The Results</h2>
-<p>That should be all we need.
-On the control server issue the following command:</p>
-<div class="highlight"><pre>ansible windows -m win_ping
-</pre></div>
-<div class="highlight"><pre>workPC.mydomain.com <span class="p">|</span> <span class="nv">SUCCESS</span> <span class="o">=</span>&gt; <span class="o">{</span>
-    <span class="s2">&quot;changed&quot;</span>: <span class="nb">false</span>,
-    <span class="s2">&quot;ping&quot;</span>: <span class="s2">&quot;pong&quot;</span>
-<span class="o">}</span>
-homePC.mydomain.com <span class="p">|</span> <span class="nv">SUCCESS</span> <span class="o">=</span>&gt; <span class="o">{</span>
-    <span class="s2">&quot;changed&quot;</span>: <span class="nb">false</span>,
-    <span class="s2">&quot;ping&quot;</span>: <span class="s2">&quot;pong&quot;</span>
-<span class="o">}</span>
-</pre></div>
-</div>
+                <a class="readmore" href="https://twopercent.github.io/pxe-server-part-1.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
 
-      </article>
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://twopercent.github.io/metro-transit-cli.html" rel="bookmark"
+                           title="Permalink to Metro Transit CLI">Metro Transit CLI</a></h1>
+                </header>
 
-      <hr />
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2015-09-22T16:26:00-05:00">
+                Published: Tue 22 September 2015
+        </abbr>
 
-        <div>
-          <h3>Last posts</h3>
-          <ol class="archive">
-    
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://twopercent.github.io/author/chris-moser.html">Chris Moser</a>
+        </address>
+<p>In <a href="https://twopercent.github.io/category/blog.html">blog</a>.</p>
+<p>tags: <a href="https://twopercent.github.io/tag/python.html">python</a> <a href="https://twopercent.github.io/tag/rest.html">REST</a> <a href="https://twopercent.github.io/tag/dev.html">dev</a> </p>
+</footer><!-- /.post-info -->                Start of one of my early python projects to interact with the Metro Transit API
+                <a class="readmore" href="https://twopercent.github.io/metro-transit-cli.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
+<p class="paginator">
+        <a href="https://twopercent.github.io/index.html">&laquo;</a>
+    Page 2 / 2
+</p>
+                </section><!-- /#content -->
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>blogroll</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="http://neic.coop">NEIC</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://twopercent.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
 
+                            <li><a href="http://github.com/twopercent">github</a></li>
+                            <li><a href="http://twitter.com/dancingwstar">twitter</a></li>
+                            <li><a href="https://www.linkedin.com/pub/chris-moser/43/738/932">linkedin</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
 
-      <li>
-<a href="/boinc-on-docker.html" rel="bookmark" title="Permalink to Boinc on Docker">Boinc on Docker</a>
-  <time datetime="2016-03-15T17:07:00-05:00" pubdate>Tue 15 March 2016</time>
-<p class="tags">tags: <a href="/tag/ops.html">ops</a><a href="/tag/centos.html">CentOS</a><a href="/tag/docker.html">docker</a><a href="/tag/boinc.html">BOINC</a></p></a>      </li>
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
 
-
-      <li>
-<a href="/marathon-part-1.html" rel="bookmark" title="Permalink to Marathon Part 1">Marathon Part 1</a>
-  <time datetime="2016-03-08T11:58:00-06:00" pubdate>Tue 08 March 2016</time>
-<p class="tags">tags: <a href="/tag/ops.html">ops</a><a href="/tag/mesos.html">mesos</a><a href="/tag/marathon.html">marathon</a><a href="/tag/zookeeper.html">zookeeper</a></p></a>      </li>
-
-
-      <li>
-<a href="/apache-aurora-tutorial.html" rel="bookmark" title="Permalink to Apache Aurora Tutorial">Apache Aurora Tutorial</a>
-  <time datetime="2016-03-03T15:28:00-06:00" pubdate>Thu 03 March 2016</time>
-<p class="tags">tags: <a href="/tag/ops.html">ops</a><a href="/tag/debian.html">debian</a><a href="/tag/mesos.html">mesos</a><a href="/tag/aurora.html">aurora</a><a href="/tag/vagrant.html">vagrant</a><a href="/tag/virtualbox.html">virtualbox</a></p></a>      </li>
-
-
-      <li>
-<a href="/apache-mesos-part-1.html" rel="bookmark" title="Permalink to Apache Mesos Part 1">Apache Mesos Part 1</a>
-  <time datetime="2016-02-23T15:12:00-06:00" pubdate>Tue 23 February 2016</time>
-<p class="tags">tags: <a href="/tag/ops.html">ops</a><a href="/tag/centos.html">CentOS</a><a href="/tag/mesos.html">mesos</a></p></a>      </li>
-
-
-      <li>
-<a href="/advent-of-code-2015.html" rel="bookmark" title="Permalink to Advent of Code 2015">Advent of Code 2015</a>
-  <time datetime="2015-12-10T16:10:00-06:00" pubdate>Thu 10 December 2015</time>
-<p class="tags">tags: <a href="/tag/dev.html">dev</a><a href="/tag/python.html">python</a></p></a>      </li>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-          </ol>
-        </div>
-
-		  </div>	
-		  
-		  <div class="sidebar">
-
-	        <nav>
-	          <h2>Categories</h2>
-	          <ul>
-	              <li ><a href="/category/blog.html">blog</a></li>
-	          </ul>
-	        </nav>
-
-	          <aside>
-	          <h2>Social</h2>
-			    <ul class="social">
-				  <li><a href="http://github.com/twopercent">github</a><i></i></li>
-				  <li><a href="http://twitter.com/dancingwstar">twitter</a><i></i></li>
-				  <li><a href="https://www.linkedin.com/pub/chris-moser/43/738/932">linkedin</a><i></i></li>
-			    </ul>
-			  </aside>
-
-	          <aside>
-	            <h2>Blogroll</h2>
-	            <ul>
-	                <li><a href="http://getpelican.com/">Pelian</a></li>
-	                <li><a href="http://python.org/">Python.org</a></li>
-	                <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
-	                <li><a href="http://neic.coop">NEIC</a></li>
-	            </ul>
-	          </aside>
-
-		  </div>
-
-	  </div>
-
-      <footer>
-		<p role="contentinfo">
-		  © 2013 Chris Moser - Proudly powered by <a href="http://alexis.notmyidea.org/pelican/">pelican</a>. Theme <a href="https://github.com/fle/pelican-simplegrey">pelican-simplegrey</a>.
-    	</p>
-
-	  </footer>	
-
-	</div>
-	
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
 
 </body>
 </html>

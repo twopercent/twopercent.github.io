@@ -1,112 +1,188 @@
-<!doctype html>
-<html lang="">	
+<!DOCTYPE html>
+<html lang="en">
 <head>
-	<meta charset="utf-8"/>
-	<title>BOINC - twopercent</title>	
-	<meta name="author" content="Chris Moser">
-	
+        <meta charset="utf-8" />
+        <title>twopercent - BOINC</title>
+        <link rel="stylesheet" href="https://twopercent.github.io/theme/css/main.css" />
+        <link href="https://twopercent.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="twopercent Atom Feed" />
 
-	<link rel="top" href="#" /><link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,300italic,400italic,600italic|Source+Code+Pro' rel='stylesheet' type='text/css'></link>
-	<link rel="stylesheet" href="/theme/css/main.css" type="text/css" />
-		
-
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
 </head>
-	
-<body>
 
-    <div class="container">
-	  
-	  <header role="banner">
-	    <div class="feeds">
-	    </div>
-	      <nav class="pages">
-			  <a href="/pages/resume.html">Resume</a>
-	      </nav>
-		<a href="" class="title">twopercent</a>
-      </header>
-	
-	  <div class="wrapper">
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://twopercent.github.io/">twopercent </a></h1>
+                <nav><ul>
+                    <li><a href="https://twopercent.github.io/pages/resume.html">Resume</a></li>
+                    <li><a href="https://twopercent.github.io/category/blog.html">blog</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
 
-		  <div role="main" class="content">
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="https://twopercent.github.io/boinc-on-docker.html">Boinc on Docker</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2016-03-15T17:07:00-05:00">
+                Published: Tue 15 March 2016
+        </abbr>
 
-<h1>Post tagged: BOINC</h1>
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://twopercent.github.io/author/chris-moser.html">Chris Moser</a>
+        </address>
+<p>In <a href="https://twopercent.github.io/category/blog.html">blog</a>.</p>
+<p>tags: <a href="https://twopercent.github.io/tag/ops.html">ops</a> <a href="https://twopercent.github.io/tag/centos.html">CentOS</a> <a href="https://twopercent.github.io/tag/docker.html">docker</a> <a href="https://twopercent.github.io/tag/boinc.html">BOINC</a> </p>
+</footer><!-- /.post-info --><p><a class="reference external" href="https://www.docker.com/">Docker</a> (Build, Ship, Run) automates the deployment of applications inside software containers.
+Virtual containers enable flexibility and portability, allowing applications to run on local or cloud infrastructure.</p>
+<div class="section" id="installation">
+<h2>Installation</h2>
+<p>On CentOS 7:</p>
+<div class="highlight"><pre><span></span>sudo yum -y install docker
+</pre></div>
+<p>Then test with:</p>
+<div class="highlight"><pre><span></span>sudo docker run hello-world
+</pre></div>
+<p>This will perform a number of actions to test your installation.</p>
+<div class="highlight"><pre><span></span>Unable to find image <span class="s1">&#39;hello-world:latest&#39;</span> locally
+Trying to pull repository docker.io/library/hello-world ... latest: Pulling from library/hello-world
+b901d36b6f2f: Pull <span class="nb">complete</span>
+0a6ba66e537a: Pull <span class="nb">complete</span>
+Digest: sha256:8be990ef2aeb16dbcb9271ddfe2610fa6658d13f6dfb8bc72074cc1ca36966a7
+Status: Downloaded newer image <span class="k">for</span> docker.io/hello-world:latest
 
-<article class="summary">
-<div class="metadata">
-  <time datetime="2016-03-15T17:07:00-05:00" pubdate>Tue 15 March 2016</time>
-    <address class="vcard author">
-      by <a class="url fn" href="/author/chris-moser.html">Chris Moser</a>
-    </address>
-  in <a href="/category/blog.html">blog</a>
-<p class="tags">tagged <a href="/tag/ops.html">ops</a>, <a href="/tag/centos.html">CentOS</a>, <a href="/tag/docker.html">docker</a>, <a href="/tag/boinc.html">BOINC</a></p></div>  <div>
-    <h2>
-      <a href="/boinc-on-docker.html" rel="bookmark" title="Permalink to Boinc on Docker">Boinc on Docker</a>
-    </h2>
-    <p><p class="first last">Installing docker and create a container for BOINC</p>
-</p>
-  </div>
-</article><article class="summary">
-<div class="metadata">
-  <time datetime="2015-11-11T15:54:00-06:00" pubdate>Wed 11 November 2015</time>
-    <address class="vcard author">
-      by <a class="url fn" href="/author/chris-moser.html">Chris Moser</a>
-    </address>
-  in <a href="/category/blog.html">blog</a>
-<p class="tags">tagged <a href="/tag/ops.html">ops</a>, <a href="/tag/saltstack.html">saltstack</a>, <a href="/tag/boinc.html">BOINC</a></p></div>  <div>
-    <h2>
-      <a href="/salt-stack-and-boinc.html" rel="bookmark" title="Permalink to Salt Stack and BOINC">Salt Stack and BOINC</a>
-    </h2>
-    <p><p class="first last">Running BOINC with Salt Stack.</p>
-</p>
-  </div>
-</article>
-<div class="pagination">
-    Page 1 / 1
+
+Hello from Docker.
+This message shows that your installation appears to be working correctly.
+
+To generate this message, Docker took the following steps:
+ 1. The Docker client contacted the Docker daemon.
+ 2. The Docker daemon pulled the <span class="s2">&quot;hello-world&quot;</span> image from the Docker Hub.
+ 3. The Docker daemon created a new container from that image which runs the
+    executable that produces the output you are currently reading.
+ 4. The Docker daemon streamed that output to the Docker client, which sent it
+    to your terminal.
+
+To try something more ambitious, you can run an Ubuntu container with:
+ $ docker run -it ubuntu bash
+
+Share images, automate workflows, and more with a free Docker Hub account:
+ https://hub.docker.com
+
+For more examples and ideas, visit:
+ https://docs.docker.com/userguide/
+
+Usage of loopback devices is strongly discouraged <span class="k">for</span> production use. Either use <span class="sb">`</span>--storage-opt dm.thinpooldev<span class="sb">`</span> or use <span class="sb">`</span>--storage-opt dm.no_warn_on_loop_devices<span class="o">=</span><span class="nb">true</span><span class="sb">`</span> to suppress this warning.
+</pre></div>
+<p>Continue with the <a class="reference external" href="https://docs.docker.com/mac/step_three/">tutorial</a> to grab a image from the <a class="reference external" href="https://hub.docker.com/">docker hub</a> and run it.</p>
 </div>
+<div class="section" id="build-an-image-from-a-dockerfile">
+<h2>Build an Image from a Dockerfile</h2>
+<p>Now lets look at the <a class="reference external" href="https://hub.docker.com/_/httpd/">httpd image</a> on docker hub.
+Create a Dockerfile:</p>
+<div class="highlight"><pre><span></span>FROM httpd:latest
+MAINTAINER <span class="s2">&quot;Chris Moser&quot;</span>
 
-		  </div>	
-		  
-		  <div class="sidebar">
+COPY ./public-html/ /usr/local/apache2/htdocs/
+</pre></div>
+<p>Create a public-html directory with an index.html file inside:</p>
+<div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>
+      Docker Web Server
+    <span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>My Docker Web Server<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>This container is running the latest apache service<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</pre></div>
+<p>Our Dockerfile instructs docker to use the latest version of the httpd image and add our website to the /usr/local/apache2/htdocs folder.
+The httpd container has already been configured to run the apached web server when it starts, pointing to this directory as its document root.</p>
+<p>Now build and start the container with:</p>
+<div class="highlight"><pre><span></span>sudo docker build -t my-apache .
+sudo docker run -it --rm my-apache
+</pre></div>
+<p>Because we didn't setup a docker network bridge, we need to get the IP of the container on the docker virtual interface.
+First run ps to get the container ID of our my-apache container and then use inspect to get the IP address.</p>
+<div class="highlight"><pre><span></span>sudo docker ps
+sudo docker inspect &lt;CONTAINER ID&gt;
+</pre></div>
+<p>Point your local browser at this address and you should see your web page.</p>
+</div>
+<div class="section" id="inspect-existing-images">
+<h2>Inspect Existing Images</h2>
+<p>While none of the tools can explicitly produce a Dockerfile from any given image, they do well to give you the gist of how an image was created.
+This is useful to get examples of how to create your own containers.</p>
+<p>Use docker inspect to look at a report from the httpd base image and from our my-apache image.</p>
+<div class="highlight"><pre><span></span>sudo docker inspect httpd
+sudo docker inspect my-apache
+</pre></div>
+<p>We can see some environment variables being set, the URL for the httpd package, and the httpd-foreground command.</p>
+<p>For an even better view, try <a class="reference external" href="https://imagelayers.io">imagelayers.io</a>.
+Put in the httpd image (it will grab it from docker hub) and it will display the likely Dockerfile instructions used to create it.</p>
+</div>
+                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
 
-	        <nav>
-	          <h2>Categories</h2>
-	          <ul>
-	              <li ><a href="/category/blog.html">blog</a></li>
-	          </ul>
-	        </nav>
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://twopercent.github.io/salt-stack-and-boinc.html" rel="bookmark"
+                           title="Permalink to Salt Stack and BOINC">Salt Stack and BOINC</a></h1>
+                </header>
 
-	          <aside>
-	          <h2>Social</h2>
-			    <ul class="social">
-				  <li><a href="http://github.com/twopercent">github</a><i></i></li>
-				  <li><a href="http://twitter.com/dancingwstar">twitter</a><i></i></li>
-				  <li><a href="https://www.linkedin.com/pub/chris-moser/43/738/932">linkedin</a><i></i></li>
-			    </ul>
-			  </aside>
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2015-11-11T15:54:00-06:00">
+                Published: Wed 11 November 2015
+        </abbr>
 
-	          <aside>
-	            <h2>Blogroll</h2>
-	            <ul>
-	                <li><a href="http://getpelican.com/">Pelian</a></li>
-	                <li><a href="http://python.org/">Python.org</a></li>
-	                <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
-	                <li><a href="http://neic.coop">NEIC</a></li>
-	            </ul>
-	          </aside>
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://twopercent.github.io/author/chris-moser.html">Chris Moser</a>
+        </address>
+<p>In <a href="https://twopercent.github.io/category/blog.html">blog</a>.</p>
+<p>tags: <a href="https://twopercent.github.io/tag/ops.html">ops</a> <a href="https://twopercent.github.io/tag/saltstack.html">saltstack</a> <a href="https://twopercent.github.io/tag/boinc.html">BOINC</a> </p>
+</footer><!-- /.post-info -->                <p class="first last">Running BOINC with Salt Stack.</p>
 
-		  </div>
+                <a class="readmore" href="https://twopercent.github.io/salt-stack-and-boinc.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
+                </section><!-- /#content -->
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>blogroll</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="http://neic.coop">NEIC</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://twopercent.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
 
-	  </div>
+                            <li><a href="http://github.com/twopercent">github</a></li>
+                            <li><a href="http://twitter.com/dancingwstar">twitter</a></li>
+                            <li><a href="https://www.linkedin.com/pub/chris-moser/43/738/932">linkedin</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
 
-      <footer>
-		<p role="contentinfo">
-		  © 2013 Chris Moser - Proudly powered by <a href="http://alexis.notmyidea.org/pelican/">pelican</a>. Theme <a href="https://github.com/fle/pelican-simplegrey">pelican-simplegrey</a>.
-    	</p>
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
 
-	  </footer>	
-
-	</div>
-	
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
 
 </body>
 </html>

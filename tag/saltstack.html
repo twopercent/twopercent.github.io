@@ -1,112 +1,213 @@
-<!doctype html>
-<html lang="">	
+<!DOCTYPE html>
+<html lang="en">
 <head>
-	<meta charset="utf-8"/>
-	<title>saltstack - twopercent</title>	
-	<meta name="author" content="Chris Moser">
-	
+        <meta charset="utf-8" />
+        <title>twopercent - saltstack</title>
+        <link rel="stylesheet" href="https://twopercent.github.io/theme/css/main.css" />
+        <link href="https://twopercent.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="twopercent Atom Feed" />
 
-	<link rel="top" href="#" /><link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,300italic,400italic,600italic|Source+Code+Pro' rel='stylesheet' type='text/css'></link>
-	<link rel="stylesheet" href="/theme/css/main.css" type="text/css" />
-		
-
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
 </head>
-	
-<body>
 
-    <div class="container">
-	  
-	  <header role="banner">
-	    <div class="feeds">
-	    </div>
-	      <nav class="pages">
-			  <a href="/pages/resume.html">Resume</a>
-	      </nav>
-		<a href="" class="title">twopercent</a>
-      </header>
-	
-	  <div class="wrapper">
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://twopercent.github.io/">twopercent </a></h1>
+                <nav><ul>
+                    <li><a href="https://twopercent.github.io/pages/resume.html">Resume</a></li>
+                    <li><a href="https://twopercent.github.io/category/blog.html">blog</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
 
-		  <div role="main" class="content">
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="https://twopercent.github.io/salt-stack-and-boinc.html">Salt Stack and BOINC</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2015-11-11T15:54:00-06:00">
+                Published: Wed 11 November 2015
+        </abbr>
 
-<h1>Post tagged: saltstack</h1>
-
-<article class="summary">
-<div class="metadata">
-  <time datetime="2015-11-11T15:54:00-06:00" pubdate>Wed 11 November 2015</time>
-    <address class="vcard author">
-      by <a class="url fn" href="/author/chris-moser.html">Chris Moser</a>
-    </address>
-  in <a href="/category/blog.html">blog</a>
-<p class="tags">tagged <a href="/tag/ops.html">ops</a>, <a href="/tag/saltstack.html">saltstack</a>, <a href="/tag/boinc.html">BOINC</a></p></div>  <div>
-    <h2>
-      <a href="/salt-stack-and-boinc.html" rel="bookmark" title="Permalink to Salt Stack and BOINC">Salt Stack and BOINC</a>
-    </h2>
-    <p><p class="first last">Running BOINC with Salt Stack.</p>
-</p>
-  </div>
-</article><article class="summary">
-<div class="metadata">
-  <time datetime="2015-11-05T12:18:00-06:00" pubdate>Thu 05 November 2015</time>
-    <address class="vcard author">
-      by <a class="url fn" href="/author/chris-moser.html">Chris Moser</a>
-    </address>
-  in <a href="/category/blog.html">blog</a>
-<p class="tags">tagged <a href="/tag/ops.html">ops</a>, <a href="/tag/saltstack.html">saltstack</a>, <a href="/tag/firewalld.html">firewalld</a>, <a href="/tag/kickstart.html">kickstart</a></p></div>  <div>
-    <h2>
-      <a href="/pxe-server-part-2-and-salt-stack.html" rel="bookmark" title="Permalink to PXE Server Part 2 and Salt Stack">PXE Server Part 2 and Salt Stack</a>
-    </h2>
-    <p><p class="first last">Initial setup of salt stack.</p>
-</p>
-  </div>
-</article>
-<div class="pagination">
-    Page 1 / 1
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://twopercent.github.io/author/chris-moser.html">Chris Moser</a>
+        </address>
+<p>In <a href="https://twopercent.github.io/category/blog.html">blog</a>.</p>
+<p>tags: <a href="https://twopercent.github.io/tag/ops.html">ops</a> <a href="https://twopercent.github.io/tag/saltstack.html">saltstack</a> <a href="https://twopercent.github.io/tag/boinc.html">BOINC</a> </p>
+</footer><!-- /.post-info --><div class="section" id="initial-setup">
+<h2>Initial Setup</h2>
+<p>Now that we have some hardware and Salt Stack running, lets create a state file and put the minions to work.
+I am going to use <a class="reference external" href="http://boinc.berkeley.edu/">BOINC</a> to stress the CPU's.</p>
+<p>The only boinc packages for CentOS 7 listed on <a class="reference external" href="http://pkgs.org/">pkgs.org</a> just moved out of epel-testing into epel after I completed my build.
+They would be a good resource for a future configuration.</p>
+<p>I downloaded the source and compiled boinc with the default options on my head node.
+I attached to <a class="reference external" href="http://www.worldcommunitygrid.org/">World Community Grid</a> with the boinccmd tool supplying the project URL and my account key.</p>
+<div class="highlight"><pre><span></span>boinccmd --project_attach www.worldcommunitygrid.org 122244_6d39631909f6dbc9491c34478ff24806
+</pre></div>
+<p>I don't intend to continue running BOINC on the salt master but wanted to make sure installaition worked and create an account file to supply to the minions.</p>
 </div>
+<div class="section" id="salt-state">
+<h2>Salt State</h2>
+<p>Now we should be able to create a salt state file, serve the boinc binaries and configuration files to the minions, and apply the state.
+The salt master puts files in /srv/salt by default.
+I created /src/salt/boinc to make things a little cleaner.
+It includes:</p>
+<div class="highlight"><pre><span></span>account_www.worldcommunitygrid.org.xml
+boinc
+boinc-client_init.d
+boinc-client_sysconfig
+</pre></div>
+<p>The xml file was created when I attached to a project on the salt master and when copied to anohter host will instruct BOINC to request work from the same project.
+The boinc directory includes the compiled boinc application.
+The boinc-client files are a startup script to be placed in /etc/init.d and a configuration file to be placed in /etc/sysconfig</p>
+<p>In /srv/salt I also keep the boinc.sls state file:</p>
+<div class="highlight"><pre><span></span>boinc:
+  user.present:
+    - home: /home/boinc
 
-		  </div>	
-		  
-		  <div class="sidebar">
+/home/boinc/boinc/:
+  file.recurse:
+    - source: salt://boinc/boinc
+    - user: boinc
+    - group: boinc
+    - clean: True
 
-	        <nav>
-	          <h2>Categories</h2>
-	          <ul>
-	              <li ><a href="/category/blog.html">blog</a></li>
-	          </ul>
-	        </nav>
+/home/boinc/boinc/client/boinc_client:
+    file.managed:
+      - source: salt://boinc/boinc/client/boinc_client
+      - user: boinc
+      - group: boinc
+      - mode: 775
 
-	          <aside>
-	          <h2>Social</h2>
-			    <ul class="social">
-				  <li><a href="http://github.com/twopercent">github</a><i></i></li>
-				  <li><a href="http://twitter.com/dancingwstar">twitter</a><i></i></li>
-				  <li><a href="https://www.linkedin.com/pub/chris-moser/43/738/932">linkedin</a><i></i></li>
-			    </ul>
-			  </aside>
+/home/boinc/boinc/client/boinc:
+  file.managed:
+    - source: salt://boinc/boinc/client/boinc
+    - user: boinc
+    - group: boinc
+    - mode: 775
 
-	          <aside>
-	            <h2>Blogroll</h2>
-	            <ul>
-	                <li><a href="http://getpelican.com/">Pelian</a></li>
-	                <li><a href="http://python.org/">Python.org</a></li>
-	                <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
-	                <li><a href="http://neic.coop">NEIC</a></li>
-	            </ul>
-	          </aside>
+/home/boinc/boinc/client/boinccmd:
+  file.managed:
+    - source: salt://boinc/boinc/client/boinccmd
+    - user: boinc
+    - group: boinc
+    - mode: 775
 
-		  </div>
+/home/boinc/boinc/client/switcher:
+  file.managed:
+    - source: salt://boinc/boinc/client/switcher
+    - user: boinc
+    - group: boinc
+    - mode: 775
 
-	  </div>
+/home/boinc/boinc/client/build_po:
+  file.managed:
+    - source: salt://boinc/boinc/client/build_po
+    - user: boinc
+    - group: boinc
+    - mode: 775
 
-      <footer>
-		<p role="contentinfo">
-		  © 2013 Chris Moser - Proudly powered by <a href="http://alexis.notmyidea.org/pelican/">pelican</a>. Theme <a href="https://github.com/fle/pelican-simplegrey">pelican-simplegrey</a>.
-    	</p>
+/home/boinc/account_www.worldcommunitygrid.org.xml:
+  file.managed:
+    - source: salt://boinc/account_www.worldcommunitygrid.org.xml
+    - user: boinc
+    - group: boinc
+    - mode: 664
 
-	  </footer>	
+/etc/init.d/boinc-client:
+  file.managed:
+    - source: salt://boinc/boinc-client_init.d
+    - user: root
+    - group: root
+    - mode: 755
 
-	</div>
-	
+/etc/sysconfig/boinc-client:
+  file.managed:
+    - source: salt://boinc/boinc-client_sysconfig
+    - user: root
+    - group: root
+    - mode: 755
+
+start boinc:
+  service.running:
+    - name: boinc-client
+</pre></div>
+<p>The first statement tells salt to create a boinc user with the default home directory location.
+Next we copy the boinc folder with the compiled boinc application to the boinc users newly created home directory.
+Salt does not maintain the owner and permissions of files when copying with the &quot;file.recurse&quot; function so the next 5 statements verify these key binaries are executable.
+We copy the account information file to the root of the boinc user home directory, the init script to /etc/init.d and the config file to /etc/sysconfig
+Finally, the &quot;start boinc&quot; state verifes that the boinc service is running.</p>
+<p>I want boinc to run on all my minions currently so we apply the state file with:</p>
+<div class="highlight"><pre><span></span>salt <span class="s1">&#39;*&#39;</span> state.apply boinc
+</pre></div>
+</div>
+<div class="section" id="next-steps">
+<h2>Next Steps</h2>
+<p>Now that a boinc-client package is available in EPEL, it would probably be cleaner to use that.
+Another option would be to use the <a class="reference external" href="https://github.com/BOINC/boinc">BOINC github repository</a>.
+We could configure salt to pull, complile, and install the latest verion on each minion every time there is an update.</p>
+<img alt="" src="http://www.worldcommunitygrid.org/getDynamicImage.do?memberName=c_moser&amp;mnOn=false&amp;stat=1&amp;imageNum=1&amp;rankOn=true&amp;projectsOn=true&amp;special=true" />
+<img alt="" src="wcg_stats.png" />
+</div>
+                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://twopercent.github.io/pxe-server-part-2-and-salt-stack.html" rel="bookmark"
+                           title="Permalink to PXE Server Part 2 and Salt Stack">PXE Server Part 2 and Salt Stack</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2015-11-05T12:18:00-06:00">
+                Published: Thu 05 November 2015
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://twopercent.github.io/author/chris-moser.html">Chris Moser</a>
+        </address>
+<p>In <a href="https://twopercent.github.io/category/blog.html">blog</a>.</p>
+<p>tags: <a href="https://twopercent.github.io/tag/ops.html">ops</a> <a href="https://twopercent.github.io/tag/saltstack.html">saltstack</a> <a href="https://twopercent.github.io/tag/firewalld.html">firewalld</a> <a href="https://twopercent.github.io/tag/kickstart.html">kickstart</a> </p>
+</footer><!-- /.post-info -->                <p class="first last">Initial setup of salt stack.</p>
+
+                <a class="readmore" href="https://twopercent.github.io/pxe-server-part-2-and-salt-stack.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
+                </section><!-- /#content -->
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>blogroll</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="http://neic.coop">NEIC</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://twopercent.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                            <li><a href="http://github.com/twopercent">github</a></li>
+                            <li><a href="http://twitter.com/dancingwstar">twitter</a></li>
+                            <li><a href="https://www.linkedin.com/pub/chris-moser/43/738/932">linkedin</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
 
 </body>
 </html>
